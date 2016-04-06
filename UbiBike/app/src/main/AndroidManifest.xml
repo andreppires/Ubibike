@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="pt.ulisboa.tecnico.cmov.ubibike">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MyProfile">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".AddAFriend" />
+        <activity android:name=".TakeMeToBike" />
+        <activity android:name=".FriendProfile" />
+        <activity android:name=".MessageActivity" />
+        <activity android:name=".GivePointsActivity" />
+        <activity android:name=".FriendsActivity" />
+        <activity android:name=".HomeActivity" />
+        <activity android:name=".BikesNeirby"></activity>
+    </application>
+
+</manifest>
