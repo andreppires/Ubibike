@@ -30,6 +30,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -325,6 +327,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
 
             // TODO: register the new account here.
+            try {
+                Socket socket = new Socket("10.0.2.3", 12345);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
             return true;
         }
 
