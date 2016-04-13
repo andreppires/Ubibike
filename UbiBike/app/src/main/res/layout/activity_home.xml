@@ -40,7 +40,7 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="RIDERS"
+        android:text="FRIENDS"
         android:id="@+id/button3"
         android:onClick="friendsActivity"
         android:background="@android:color/transparent"
