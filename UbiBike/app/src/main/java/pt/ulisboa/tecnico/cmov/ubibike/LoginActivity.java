@@ -327,11 +327,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
 
             // TODO: register the new account here.
-            try {
-                Socket socket = new Socket("10.0.2.3", 12345);
+            /*try {
+                Socket socket = new Socket("10.0.3.2", 12345);
             } catch (IOException e) {
                 e.printStackTrace();
-            }
+            }*/
 
 
             return true;
