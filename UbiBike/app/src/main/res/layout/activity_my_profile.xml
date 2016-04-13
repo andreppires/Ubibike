@@ -64,6 +64,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Show Friends"
+            android:onClick="showFriends"
             android:id="@+id/button2"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp" />
