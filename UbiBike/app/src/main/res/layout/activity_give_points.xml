@@ -52,7 +52,7 @@
         android:layout_width="50dp"
         android:layout_height="30dp"
         android:inputType="number"
-        android:id="@+id/editText2"
+        android:id="@+id/textView7"
         android:layout_alignStart="@+id/textView4"
         android:layout_alignLeft="@+id/textView4"
         android:layout_gravity="center_horizontal"
@@ -83,7 +83,7 @@
             android:layout_width="50dp"
             android:layout_height="30dp"
             android:inputType="number"
-            android:id="@+id/editText3"
+            android:id="@+id/textView8"
 
             android:layout_alignStart="@+id/textView4"
             android:layout_alignLeft="@+id/textView4"
@@ -133,7 +133,9 @@ android:layout_gravity="center">
         android:id="@+id/button"
         android:layout_below="@+id/textView6"
         android:layout_toRightOf="@+id/textView5"
-        android:layout_toEndOf="@+id/textView5" />
+        android:layout_toEndOf="@+id/textView5"
+
+        />
     </LinearLayout>
 
 </LinearLayout>
