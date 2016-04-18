@@ -1,7 +1,5 @@
 package pt.ulisboa.tecnico.cmov.ubibike;
 
-import android.content.Intent;
-import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
@@ -11,7 +9,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
 
 public class GivePointsActivity extends AppCompatActivity {
 
@@ -20,7 +17,6 @@ public class GivePointsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_give_points);
-
 
         final EditText et = (EditText) findViewById(R.id.editText);
         final TextView tx = (TextView) findViewById(R.id.textView7);

@@ -17,7 +17,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_toLeftOf="@+id/chatSendButton"
-            android:autoText="true"
             android:hint="type message" />
 
         <Button
@@ -62,4 +61,5 @@
             android:textSize="20dp" />
 
     </RelativeLayout>
+
 </LinearLayout>
