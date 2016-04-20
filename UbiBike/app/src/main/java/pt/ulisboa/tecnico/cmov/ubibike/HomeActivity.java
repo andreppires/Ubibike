@@ -28,8 +28,8 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    //public void stationActivity(View view) { //TODO quando se tiver a activity das estações - nome deve ser StationActivity
-    //    Intent intent = new Intent(this, StationActivity.class);
-    //    startActivity(intent);
-    //}
+    public void stationActivity(View view) { //TODO quando se tiver a activity das estações - nome deve ser StationActivity
+        Intent intent = new Intent(this, StationActivity.class);
+        startActivity(intent);
+    }
 }

@@ -28,6 +28,7 @@
         <activity android:name=".FriendsActivity" />
         <activity android:name=".HomeActivity" />
         <activity android:name=".BikesNeirby" />
+        <activity android:name=".StationActivity" />
         <activity android:name=".MyProfile" />
         <activity
             android:name=".LoginActivity"
