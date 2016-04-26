@@ -34,6 +34,7 @@
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" />
+        <activity android:name=".NewClient"></activity>
     </application>
 
 </manifest>

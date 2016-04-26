@@ -30,13 +30,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -355,6 +348,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     public void homeActivity() {
         Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+    }
+
+    public void newClient(View view) {
+        Intent intent = new Intent(this, NewClient.class);
         startActivity(intent);
     }
 
