@@ -30,8 +30,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.io.IOException;
-import java.net.Socket;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -174,11 +179,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
             cancel = true;
-        } else if (!isEmailValid(email)) {
+        } /*else if (!isEmailValid(email)) {
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
             cancel = true;
-        }
+        }*/
 
         if (cancel) {
             // There was an error; don't attempt login and focus the first
@@ -309,25 +314,21 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
 
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
-
-            // TODO: register the new account here.
-            /*try {
-                Socket socket = new Socket("10.0.2.3", 12345);
-            } catch (IOException e) {
+            RestClient client = new RestClient("http://andrepirespi.duckdns.org:3000/user");
+            client.AddParam("username", mEmail);
+            try {
+                client.Execute(RequestMethod.GET);
+            } catch (Exception e) {
                 e.printStackTrace();
-            }*/
+            }
+            String response = client.getResponse();
 
-
-            return true;
+            String[] aux= response.split(":");
+            String[] aux1= aux[1].split("\"");
+            if(mPassword.equals(aux1[1])){
+                return true;
+            }else return false;
         }
 
         @Override
@@ -337,11 +338,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             if (success) {
                 finish();
+                homeActivity();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
             }
-            homeActivity();
         }
 
         @Override
@@ -349,6 +350,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = null;
             showProgress(false);
         }
+
     }
 
     public void homeActivity() {
