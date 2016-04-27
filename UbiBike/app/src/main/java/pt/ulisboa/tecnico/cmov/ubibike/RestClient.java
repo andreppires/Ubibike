@@ -123,6 +123,23 @@ public class RestClient {
                 executeRequest(request, url);
                 break;
             }
+            case DELETE:
+            {
+                HttpPost request = new HttpPost(url);
+
+                //add headers
+                for(NameValuePair h : headers)
+                {
+                    request.addHeader(h.getName(), h.getValue());
+                }
+
+                if(!params.isEmpty()){
+                    request.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
+                }
+
+                executeRequest(request, url);
+                break;
+            }
         }
     }
 

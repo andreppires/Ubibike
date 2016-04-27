@@ -71,10 +71,10 @@ public class NewClient extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 response=client.getResponse();
-                if(response.equals("OK"))
+                if(response.contains("OK")) {
+                    Client.setClient(new Client(mmEmail, 0));
                     return true;
-                else {
-                    System.out.println(response);
+                }else {
                     return false;
 
                 }

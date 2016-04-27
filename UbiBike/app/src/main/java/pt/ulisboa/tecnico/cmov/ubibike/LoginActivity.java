@@ -40,6 +40,8 @@ import static android.Manifest.permission.READ_CONTACTS;
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
+    String email=null;
+
     /**
      * Id to identity READ_CONTACTS permission request.
      */
@@ -154,7 +156,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
+        email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
 
         boolean cancel = false;
@@ -347,13 +349,59 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     public void homeActivity() {
+        GetPoints vailabuscar = new GetPoints(email);
+        vailabuscar.execute();
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
+
     }
 
     public void newClient(View view) {
         Intent intent = new Intent(this, NewClient.class);
         startActivity(intent);
+    }
+
+    class GetPoints extends AsyncTask<Void, Void, Boolean> {
+
+        private String email=null;
+        int pontos=0;
+
+        public GetPoints(String e){
+            this.email=e;
+        }
+
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            RestClient client = new RestClient("http://andrepirespi.duckdns.org:3000/pontos");
+            client.AddParam("username", email);
+            try {
+                client.Execute(RequestMethod.GET);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            String response = client.getResponse();
+            System.out.println(response);
+            String[] aux= response.split(":");
+            System.out.println(aux[1]);
+            String[] aux1= aux[1].split("\\}");
+            pontos = Integer.parseInt(aux1[0]);
+
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            mAuthTask = null;
+            showProgress(false);
+
+            if (success) {
+                Client.setClient(new Client(email, pontos));
+                finish();
+            } else {
+                //todo erro no pedido
+            }
+        }
     }
 
 }

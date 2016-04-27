@@ -32,6 +32,24 @@ var appRouter = function(app) {
 		}
 	});
 
+	app.get("/pontos", function(req, res) {
+			if(!req.query.username) {
+        	return res.send({"status": "error", "message": "missing username"});
+    	}
+			else {
+				connection.query('SELECT pontos FROM user WHERE username=\''+req.query.username+'\';', function(err, rows, fields) {
+				  if (err){
+					if (err.code === 'PROTOCOL_SEQUENCE_TIMEOUT') {
+						node.exit();
+                    }
+					res.status(203).send("Wrong query");
+				}
+				res.status(202).send(rows);
+				console.log(rows);
+			});
+		}
+	});
+
 		app.post("/account", function(req, res) {
 	    if(!req.body.username || !req.body.password) {
 	        return res.send({"status": "error", "message": "missing a parameter"});
@@ -49,11 +67,11 @@ var appRouter = function(app) {
 		}
 	});
 
-	app.delete("/userdelete", function(req, res) {
-		if(!req.query.username) {
+	app.post("/userdelete", function(req, res) {
+		if(!req.body.username) {
 				return res.send({"status": "error", "message": "missing a parameter"});
 		} else {
-			connection.query('DELETE FROM user WHERE username=\''+req.query.username+'\';', function(err, rows, fields) {
+			connection.query('DELETE FROM user WHERE username=\''+req.body.username+'\';', function(err, rows, fields) {
 				if (err){
 				if (err.code === 'PROTOCOL_SEQUENCE_TIMEOUT') {
 					node.exit();
