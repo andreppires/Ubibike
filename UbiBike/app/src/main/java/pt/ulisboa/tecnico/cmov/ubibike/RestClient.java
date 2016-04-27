@@ -133,6 +133,7 @@ public class RestClient {
         HttpResponse httpResponse;
 
         try {
+            System.out.println("URL Completo: "+request.getURI().toString());
             httpResponse = client.execute(request);
             responseCode = httpResponse.getStatusLine().getStatusCode();
             message = httpResponse.getStatusLine().getReasonPhrase();

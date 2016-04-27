@@ -6,12 +6,20 @@ import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
 
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    Client client= new Client("null", 0);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //Server server = new Server();
 
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);

@@ -1,5 +1,6 @@
 package pt.ulisboa.tecnico.cmov.ubibike;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,13 +8,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.sql.SQLOutput;
+
 public class NewClient extends AppCompatActivity {
 
     private EditText mEmail = null;
     private EditText mPassword = null;
     private String email;
-    private String passowrd;
+    private String password;
+    PostClient connectServer = null;
     Button mButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,18 +33,78 @@ public class NewClient extends AppCompatActivity {
                 new View.OnClickListener() {
                     public void onClick(View view) {
                         email = mEmail.getText().toString().trim();
-                        passowrd = mPassword.getText().toString().trim();
-                        System.out.println(email);
-                        System.out.println(passowrd);
+                        password = mPassword.getText().toString().trim();
+                        connectServer = new PostClient(email, password);
+                        connectServer.execute();
 
                     }
                 });
     }
-    class PostClient extends AsyncTask{
+    class PostClient extends AsyncTask<Void, Void, Boolean>{
+        private final String mmEmail;
+        private final String mmPassword;
+
+        PostClient(String email, String password) {
+            mmEmail = email;
+            mmPassword = password;
+        }
 
         @Override
-        protected Object doInBackground(Object[] params) {
-            return null;
+        protected Boolean doInBackground(Void... params) {
+            RestClient client = new RestClient("http://andrepirespi.duckdns.org:3000/user");
+            client.AddParam("username", mmEmail);
+            try {
+                client.Execute(RequestMethod.GET);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            String response = client.getResponse();
+
+            if(!response.contains(":")){
+
+                client = new RestClient("http://andrepirespi.duckdns.org:3000/account");
+                client.AddParam("username", mmEmail);
+                client.AddParam("password", mmPassword);
+                try {
+                    client.Execute(RequestMethod.POST);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                response=client.getResponse();
+                if(response.equals("OK"))
+                    return true;
+                else {
+                    System.out.println(response);
+                    return false;
+
+                }
+            }else {
+                return false;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            connectServer = null;
+
+            if (success) {
+                finish();
+                //Client.setClient(mmEmail, 0);
+                homeActivity();
+            } else {
+                mEmail.setError(getString(R.string.error_email_exists));
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            connectServer = null;
         }
     }
+
+    public void homeActivity() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+    }
+
 }
