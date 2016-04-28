@@ -31,7 +31,12 @@
             android:text="Edit Profile Photo"
             android:id="@+id/textView10"
             android:layout_gravity="center_horizontal"
+
+
+
+
              />
+
 
         <LinearLayout
             android:orientation="horizontal"
