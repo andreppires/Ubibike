@@ -20,13 +20,13 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Rui Ribeiro"
-            android:id="@+id/textView"
+            android:id="@+id/username"
             android:layout_gravity="center_horizontal" />
 
         <ImageView
             android:layout_width="136dp"
             android:layout_height="183dp"
-            android:id="@+id/imageView"
+            android:id="@+id/profilepicture"
             android:layout_gravity="center_horizontal"
             android:src="@drawable/ic_person_black_48dp"/>
 
@@ -41,14 +41,14 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Pontos :"
-                android:id="@+id/textView2"
+                android:id="@+id/points"
                 android:layout_weight="0.47" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="100"
-                android:id="@+id/textView3"
+                android:id="@+id/numOfPoints"
                 android:layout_gravity="center" />
         </LinearLayout>
 
@@ -56,7 +56,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Show Trajectories"
-            android:id="@+id/button"
+            android:id="@+id/showTraj"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp" />
 
@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:text="Show Friends"
             android:onClick="showFriends"
-            android:id="@+id/button2"
+            android:id="@+id/showFriends"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp" />
 
@@ -73,7 +73,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Edit Profile"
-            android:id="@+id/button3"
+            android:id="@+id/editProfile"
             android:onClick="editProfile"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp" />
@@ -82,7 +82,7 @@
             android:layout_width="387dp"
             android:layout_height="wrap_content"
             android:text="DELETE ACCOUNT"
-            android:id="@+id/button8"
+            android:id="@+id/deleteAcc"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp" />
 

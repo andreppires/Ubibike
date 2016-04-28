@@ -43,11 +43,6 @@ public class FriendsActivity extends Activity {
             }
         } );
     }
-        //myList.setLongClickable(true)
-
-    /* Ao pressionar prolongadamente sobre o nome do amigo direcciona p o perfil do amigo */
-
-
 
     /*Adicionar um novo amigo */
     public void addFriend(View view) {
