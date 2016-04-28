@@ -27,7 +27,8 @@
             android:layout_width="136dp"
             android:layout_height="183dp"
             android:id="@+id/imageView"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/ic_person_black_48dp"/>
 
         <LinearLayout
             android:orientation="horizontal"
@@ -46,7 +47,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="New Text"
+                android:text="100"
                 android:id="@+id/textView3"
                 android:layout_gravity="center" />
         </LinearLayout>
@@ -73,6 +74,7 @@
             android:layout_height="wrap_content"
             android:text="Edit Profile"
             android:id="@+id/button3"
+            android:onClick="editProfile"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp" />
 

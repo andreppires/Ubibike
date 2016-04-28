@@ -34,12 +34,12 @@ public class FriendsActivity extends Activity {
 
         myList.setAdapter(adapter);
 
-        myList.setOnItemLongClickListener(new OnItemLongClickListener() {
+        myList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(view.getContext(), FriendProfile.class);
                 startActivity(intent);
-                return true;
+
             }
         } );
     }
