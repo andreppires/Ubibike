@@ -82,7 +82,6 @@
             android:layout_width="387dp"
             android:layout_height="wrap_content"
             android:text="DELETE ACCOUNT"
-            android:onClick="DeleteAccount"
             android:id="@+id/button8"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp" />
