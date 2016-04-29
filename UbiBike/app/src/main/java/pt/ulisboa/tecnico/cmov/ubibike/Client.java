@@ -20,6 +20,8 @@ public final class Client {
 
     public void setUsername(String username) {
         this.username = username;
+
+        
     }
 
     String username=null;
