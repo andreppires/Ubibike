@@ -163,11 +163,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+        /*if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
-        }
+        }*/
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
@@ -319,11 +319,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
             String response = client.getResponse();
 
-            String[] aux= response.split(":");
-            String[] aux1= aux[1].split("\"");
-            if(mPassword.equals(aux1[1])){
-                return true;
-            }else return false;
+            if(response.contains(":")){
+                String[] aux= response.split(":");
+                String[] aux1= aux[1].split("\"");
+                if(mPassword.equals(aux1[1])){
+                    return true;
+                }else return false;
+            }
+            else return false;
         }
 
         @Override

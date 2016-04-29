@@ -27,11 +27,24 @@ public class MyProfile extends AppCompatActivity {
 
                         DeleteAyncAccount deletaAi = new DeleteAyncAccount(Client.getClient().getUsername());
                         deletaAi.execute();
+                        login();
 
                     }
                 });
 
+        mButton = (Button)findViewById(R.id.editProfile);
+
+        mButton.setOnClickListener(
+                new View.OnClickListener() {
+                    public void onClick(View view) {
+                        editProfile();
+                    }
+
+                }
+        );
+
         TextView usernameView = (TextView)findViewById(R.id.username);
+        System.out.println(Client.getClient().getUsername());
         usernameView.setText(Client.getClient().getUsername());
 
         TextView pointsView = (TextView)findViewById(R.id.numOfPoints);
@@ -40,6 +53,11 @@ public class MyProfile extends AppCompatActivity {
         sb.append(Client.getClient().getPontos());
         String strI = sb.toString();
         pointsView.setText(strI);
+    }
+
+    private void login() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
     }
 
     public void showFriends(View view) {
@@ -68,5 +86,11 @@ public class MyProfile extends AppCompatActivity {
             client.getResponse();
             return null;
         }
+    }
+
+    public void editProfile(){
+            Intent intent = new Intent(this, EditProfile.class);
+            startActivity(intent);
+
     }
 }
