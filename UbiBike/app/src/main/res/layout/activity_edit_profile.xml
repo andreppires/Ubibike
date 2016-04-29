@@ -21,7 +21,7 @@
         <ImageView
             android:layout_width="159dp"
             android:layout_height="215dp"
-            android:id="@+id/imageView"
+            android:id="@+id/profilePic"
             android:layout_gravity="center_horizontal"
             android:src="@drawable/ic_person_black_48dp" />
 
@@ -51,33 +51,19 @@
             android:inputType="textPersonName"
             android:text="Name"
             android:ems="10"
-            android:id="@+id/editText4"
+            android:id="@+id/username"
             android:layout_gravity="center_horizontal" />
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="43dp">
-
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:id="@+id/imageView3"
-                android:src="@drawable/ic_mail_outline_black_18dp" />
-
-            <EditText
+            <Button
+                style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:inputType="textEmailAddress"
-                android:text="email"
-                android:ems="10"
-                android:id="@+id/editText6"
-                android:layout_gravity="center_horizontal" />
+                android:layout_height="wrap_content"
+                android:text="Ok"
+                android:id="@+id/buttonOkUsername"
+                android:onClick=""
+                />
 
         </LinearLayout>
-
 
         <LinearLayout
             android:orientation="horizontal"
@@ -96,13 +82,18 @@
                 android:inputType="textPassword"
                 android:text="Password"
                 android:ems="10"
-                android:id="@+id/editText5"
+                android:id="@+id/pass"
                 android:layout_gravity="center_horizontal" />
 
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ok"
+                android:id="@+id/buttonOkPass"
+                />
+
         </LinearLayout>
-
     </LinearLayout>
-
-
 
 </RelativeLayout>

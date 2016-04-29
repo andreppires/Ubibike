@@ -23,10 +23,15 @@ public class GivePointsActivity extends AppCompatActivity {
         final TextView mypoints = (TextView) findViewById(R.id.myPoints);
         Button b = (Button)findViewById(R.id.button);
 
+        StringBuilder sb = new StringBuilder();
+        sb.append("");
+        sb.append(Client.getClient().getPontos());
+        String strI = sb.toString();
+        mypoints.setText(strI);
+
         pointstosend.setInputType(InputType.TYPE_CLASS_NUMBER);
         mypoints.setInputType(InputType.TYPE_CLASS_NUMBER);
         friendpoints.setInputType(InputType.TYPE_CLASS_NUMBER);
-
 
 
         b.setOnClickListener(new View.OnClickListener() {
@@ -41,10 +46,8 @@ public class GivePointsActivity extends AppCompatActivity {
                     friendpoints.setText(Integer.toString(friendsPoints + pointsToSend));
                     mypoints.setText(Integer.toString(myPoints - pointsToSend));
                 } else {
-
                     Toast.makeText(v.getContext(), "Não existem pontos para enviar", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
     }
