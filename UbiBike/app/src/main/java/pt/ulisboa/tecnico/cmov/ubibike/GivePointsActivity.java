@@ -27,6 +27,8 @@ public class GivePointsActivity extends AppCompatActivity {
         mypoints.setInputType(InputType.TYPE_CLASS_NUMBER);
         friendpoints.setInputType(InputType.TYPE_CLASS_NUMBER);
 
+
+
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
