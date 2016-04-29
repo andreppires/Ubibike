@@ -18,7 +18,6 @@ public class MyProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_profile);
 
-
         mButton = (Button)findViewById(R.id.deleteAcc);
 
         mButton.setOnClickListener(
