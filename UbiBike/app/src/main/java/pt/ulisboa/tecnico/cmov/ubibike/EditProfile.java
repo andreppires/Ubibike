@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class EditProfile extends AppCompatActivity {
 
@@ -12,18 +13,18 @@ public class EditProfile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
-        changeUsername();
+        //changeUsername();
         changePassword();
     }
 
-    public void changeUsername() {
+    /*public void changeUsername() {
         Button okUsername = (Button)findViewById(R.id.buttonOkUsername);
 
         okUsername.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                EditText username = (EditText) findViewById(R.id.username);
+                TextView username = (TextView) findViewById(R.id.username);
 
                 String newUsername = username.getText().toString();
 
@@ -33,7 +34,7 @@ public class EditProfile extends AppCompatActivity {
 
             }
         });
-    }
+    }*/
 
     public void changePassword() {
         Button okPass = (Button)findViewById(R.id.buttonOkPass);
@@ -47,6 +48,8 @@ public class EditProfile extends AppCompatActivity {
                 String newPassword = password.getText().toString();
 
                 System.out.println(newPassword);
+
+
 
                 Client.getClient().setUsername(newPassword);
             }

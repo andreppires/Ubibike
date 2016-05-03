@@ -57,3 +57,6 @@ INSERT INTO store(latitude, longitude) VALUES
 
 INSERT INTO bicicleta (status, localizacao) VALUES
 ('FALSE',1);
+
+INSERT INTO amigos (username1, username2) VALUES
+('admin','develop');

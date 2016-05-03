@@ -1,5 +1,6 @@
 package pt.ulisboa.tecnico.cmov.ubibike;
 
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
@@ -12,15 +13,25 @@ import android.widget.Toast;
 
 public class GivePointsActivity extends AppCompatActivity {
 
+    SetPoints connectServer = null;
+
+    EditText pointstosend;
+    TextView mypoints;
+    TextView friendpoints;
+
+    int friendsPoints;
+    int pointsToSend;
+    int myPoints;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_give_points);
 
-        final EditText pointstosend = (EditText) findViewById(R.id.pointsToSend);
-        final TextView friendpoints = (TextView) findViewById(R.id.friendPoints);
-        final TextView mypoints = (TextView) findViewById(R.id.myPoints);
+        pointstosend = (EditText) findViewById(R.id.pointsToSend);
+        friendpoints = (TextView) findViewById(R.id.friendPoints);
+        mypoints = (TextView) findViewById(R.id.myPoints);
         Button b = (Button)findViewById(R.id.button);
 
         StringBuilder sb = new StringBuilder();
@@ -38,13 +49,15 @@ public class GivePointsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                final int friendsPoints = Integer.parseInt(friendpoints.getText().toString());
-                final int pointsToSend = Integer.parseInt(pointstosend.getText().toString());
-                final int myPoints = Integer.parseInt(mypoints.getText().toString());
+                friendsPoints = Integer.parseInt(friendpoints.getText().toString());
+                pointsToSend = Integer.parseInt(pointstosend.getText().toString());
+                myPoints = Integer.parseInt(mypoints.getText().toString());
 
-                if(myPoints > 0) {
-                    friendpoints.setText(Integer.toString(friendsPoints + pointsToSend));
-                    mypoints.setText(Integer.toString(myPoints - pointsToSend));
+                if((myPoints - pointsToSend) > 0) {
+                    connectServer = new SetPoints(Client.getClient().getUsername(), (myPoints-pointsToSend));
+                    connectServer.execute();
+
+
                 } else {
                     Toast.makeText(v.getContext(), "Não existem pontos para enviar", Toast.LENGTH_SHORT).show();
                 }
@@ -52,6 +65,50 @@ public class GivePointsActivity extends AppCompatActivity {
         });
     }
 
+    class SetPoints extends AsyncTask<Void, Void, Boolean>{
 
+        private final String mmEmail;
+        private final int mPontos;
+        SetPoints(String email, int pontos) {
+            mmEmail = email;
+            mPontos = pontos;
+        }
 
+        @Override
+        protected Boolean doInBackground(Void... params) { //todo apenas actualiza os pontos do atual utilizador. Pontos do amigo também têm de ser atualizados.
+            RestClient client = new RestClient("http://andrepirespi.duckdns.org:3000/setpoints");
+            client.AddParam("username", mmEmail);
+            client.AddParam("points", Integer.toString(mPontos) );
+            try {
+                client.Execute(RequestMethod.GET);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            String response = client.getResponse();
+
+            if(!response.contains("OK")){
+                Client.getClient().setPontos(mPontos);
+                return true;
+            }else {
+                return false;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            connectServer = null;
+
+            if (success) {
+                friendpoints.setText(Integer.toString(friendsPoints + pointsToSend));
+                mypoints.setText(Integer.toString(myPoints - pointsToSend));
+            } else {
+                pointstosend.setError(getString(R.string.error_server));
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            connectServer = null;
+        }
+    }
 }

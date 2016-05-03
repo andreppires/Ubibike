@@ -25,9 +25,11 @@ var appRouter = function(app) {
 						node.exit();
                     }
 					res.status(203).send("Wrong query");
+				}else {
+					res.status(202).send(rows);
+					console.log(rows);
 				}
-				res.status(202).send(rows);
-				console.log(rows);
+
 			});
 		}
 	});
@@ -43,9 +45,11 @@ var appRouter = function(app) {
 						node.exit();
                     }
 					res.status(203).send("Wrong query");
+				}else {
+					res.status(202).send(rows);
+					console.log(rows);
 				}
-				res.status(202).send(rows);
-				console.log(rows);
+
 			});
 		}
 	});
@@ -60,9 +64,11 @@ var appRouter = function(app) {
 						node.exit();
 										}
 					res.status(203).send("Wrong with de database");
+				}else {
+					res.status(200).send("OK");
+					console.log(rows);
 				}
-				res.status(200).send("OK");
-				console.log(rows);
+
 			});
 		}
 	});
@@ -83,6 +89,40 @@ var appRouter = function(app) {
 		});
 	}
 });
+
+app.post("/updatepass", function(req, res){
+	if(!req.body.username || !req.body.novapassword) {
+			return res.send({"status": "error", "message": "missing a parameter"});
+	}else {
+		connection.query('UPDATE user SET password=\''+req.body.novapassword+'\' WHERE username=\''+req.body.username+'\';', function(err, rows, fields) {
+							if (err){
+								if (err.code === 'PROTOCOL_SEQUENCE_TIMEOUT') {
+									node.exit();
+								}
+								res.status(203).send("Wrong query");
+							}else {
+								res.status(200).send('OK');
+							}
+					});
+			}
+		});
+
+		app.post("/setpoints", function(req, res){
+			if(!req.body.username || !req.body.points) {
+					return res.send({"status": "error", "message": "missing a parameter"});
+			}else {
+				connection.query('UPDATE user SET pontos=\''+req.body.points+'\' WHERE username=\''+req.body.username+'\';', function(err, rows, fields) {
+									if (err){
+										if (err.code === 'PROTOCOL_SEQUENCE_TIMEOUT') {
+											node.exit();
+										}
+										res.status(203).send("Wrong query");
+									}else {
+										res.status(200).send('OK');
+									}
+							});
+					}
+				});
 
 }
 
