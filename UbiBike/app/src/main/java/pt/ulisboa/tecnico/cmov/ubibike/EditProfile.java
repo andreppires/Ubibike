@@ -1,5 +1,6 @@
 package pt.ulisboa.tecnico.cmov.ubibike;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -14,7 +15,7 @@ public class EditProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
         //changeUsername();
-        changePassword();
+        changePass();
     }
 
     /*public void changeUsername() {
@@ -36,24 +37,23 @@ public class EditProfile extends AppCompatActivity {
         });
     }*/
 
-    public void changePassword() {
-        Button okPass = (Button)findViewById(R.id.buttonOkPass);
-
-        okPass.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                EditText password = (EditText) findViewById(R.id.pass);
-
-                String newPassword = password.getText().toString();
-
-                System.out.println(newPassword);
 
 
+        public void changePass () {
 
-                Client.getClient().setUsername(newPassword);
-            }
-        });
+            Button changepass = (Button) findViewById(R.id.buttonChangePassword);
+
+            changepass.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    fazCenas();
+                }
+
+            });
+        }
+
+    private void fazCenas() {
+        Intent intent = new Intent(this, ChangePassword.class);
+        startActivity(intent);
     }
-
 }

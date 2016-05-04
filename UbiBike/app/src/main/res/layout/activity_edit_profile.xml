@@ -25,15 +25,6 @@
             android:layout_gravity="center_horizontal"
             android:src="@drawable/ic_person_black_48dp" />
 
-        <TextView
-            android:layout_width="155dp"
-            android:layout_height="wrap_content"
-            android:text="Edit Profile Photo"
-            android:id="@+id/textView10"
-            android:layout_gravity="center_horizontal"
-             />
-
-
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -42,24 +33,39 @@
         <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:id="@+id/imageView1"
+            android:id="@+id/imageView3"
             android:src="@drawable/ic_account_circle_black_18dp" />
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:inputType="textPersonName"
-            android:text="Name"
-            android:ems="10"
-            android:id="@+id/username"
-            android:layout_gravity="center_horizontal" />
 
             <Button
                 style="?android:attr/buttonStyleSmall"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Ok"
-                android:id="@+id/buttonOkUsername"
+                android:text="Change UserName"
+                android:id="@+id/buttonChangeUsername"
+                android:onClick=""
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="43dp">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/imageView1"
+                android:src="@drawable/ic_account_circle_black_18dp" />
+
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Change Profile Photo"
+                android:id="@+id/buttonChangeProfilePhoto"
                 android:onClick=""
                 />
 
@@ -76,21 +82,13 @@
                 android:id="@+id/imageView2"
                 android:src="@drawable/ic_vpn_key_black_18dp" />
 
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:inputType="textPassword"
-                android:text="Password"
-                android:ems="10"
-                android:id="@+id/pass"
-                android:layout_gravity="center_horizontal" />
 
             <Button
                 style="?android:attr/buttonStyleSmall"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Ok"
-                android:id="@+id/buttonOkPass"
+                android:text="Change Password"
+                android:id="@+id/buttonChangePassword"
                 />
 
         </LinearLayout>

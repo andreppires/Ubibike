@@ -29,10 +29,10 @@
         <activity android:name=".HomeActivity" />
         <activity android:name=".BikesNeirby" />
         <activity android:name=".MyProfile" />
+        <activity android:name=".ChangePassword" />
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" />
-        <activity android:name=".Main2Activity" />
         <activity android:name=".EditProfile"></activity>
     </application>
 
