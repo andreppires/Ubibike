@@ -21,6 +21,7 @@ import pt.inesc.termite.wifidirect.sockets.SimWifiP2pSocketServer;
 import pt.ulisboa.tecnico.cmov.ubibike.App.Message;
 import pt.ulisboa.tecnico.cmov.ubibike.App.Peers;
 import pt.ulisboa.tecnico.cmov.ubibike.App.WifiApp;
+import pt.ulisboa.tecnico.cmov.ubibike.AsyncTask.ReceiveCommTask;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -68,7 +69,7 @@ public class HomeActivity extends AppCompatActivity {
                 public void run() {
                     try {
 
-                        mSrvSocket = new SimWifiP2pSocketServer(9002);
+                        mSrvSocket = new SimWifiP2pSocketServer(10001);
 
                         while (true) {
 
@@ -92,8 +93,42 @@ public class HomeActivity extends AppCompatActivity {
     public void searchPeers(View view) {
         final WifiApp app = (WifiApp) getApplicationContext();
 
-        if (!app.GO && app.ismBound() && app.inGroup) {
+        if (app.ismBound() && app.inGroup) {
+            Thread secndThread = new Thread() {
+                public void run() {
+                    try {
+                        Message req = new Message("requestIp");
+                        for (Peers p : app.getConnectedPeersList()) {
+                            if (!p.getDeviceName().equals(app.runningDevice)) {
+                                if (p.getDeviceName().equals(app.groupOwner)) {
+                                    req.getConnectedPeersList().add(p);
 
+                                    Log.v(p.getVirtualIP(), "" + p.getPort());
+                                    final SimWifiP2pSocket clientSocket = new SimWifiP2pSocket(p.getVirtualIP(), p.getPort());
+
+                                    ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
+                                    out.writeObject(req);
+                                    out.flush();
+
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            new ReceiveCommTask(app, getApplicationContext()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,
+                                                    clientSocket);
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+            };
+
+            secndThread.start();
         } else {
             if (!app.ismBound())
                 Toast.makeText(this, "Service not bound", Toast.LENGTH_SHORT).show();
