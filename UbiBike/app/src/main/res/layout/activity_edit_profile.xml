@@ -56,29 +56,6 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:id="@+id/imageView1"
-                android:src="@drawable/ic_account_circle_black_18dp" />
-
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Change Profile Photo"
-                android:id="@+id/buttonChangeProfilePhoto"
-                android:onClick=""
-                />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="43dp">
-
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
                 android:id="@+id/imageView2"
                 android:src="@drawable/ic_vpn_key_black_18dp" />
 
