@@ -14,6 +14,8 @@ import java.util.ArrayList;
 
 public class FriendsActivity extends Activity {
 
+
+
     ArrayList<String> arr_friends = new ArrayList<String>();
 
 
