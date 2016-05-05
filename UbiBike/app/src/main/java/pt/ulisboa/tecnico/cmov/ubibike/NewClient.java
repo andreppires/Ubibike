@@ -51,7 +51,7 @@ public class NewClient extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            RestClient client = new RestClient("http://andrepirespi.duckdns.org:3000/user");
+            RestClient client = new RestClient("http://10.0.2.3:3000/user");
             client.AddParam("username", mmEmail);
             try {
                 client.Execute(RequestMethod.GET);
@@ -62,7 +62,7 @@ public class NewClient extends AppCompatActivity {
 
             if(!response.contains(":")){
 
-                client = new RestClient("http://andrepirespi.duckdns.org:3000/account");
+                client = new RestClient("http://10.0.2.3:3000/account");
                 client.AddParam("username", mmEmail);
                 client.AddParam("password", mmPassword);
                 try {

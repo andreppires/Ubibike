@@ -75,7 +75,7 @@ public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
     @Override
     protected Boolean doInBackground(Void... params) {
 
-        RestClient client = new RestClient("http://andrepirespi.duckdns.org:3000/user");
+        RestClient client = new RestClient("http://10.0.2.3:3000/user");
         client.AddParam("username", mEmail);
         try {
             client.Execute(RequestMethod.GET);
@@ -93,7 +93,7 @@ public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
             if(mPassword.equals(aux1[1])){
                 //set new password
                 System.out.println("estou aqui PAH!");
-                client = new RestClient("http://andrepirespi.duckdns.org:3000/updatepass");
+                client = new RestClient("http://10.0.2.3:3000/updatepass");
                 client.AddParam("username", mEmail);
                 System.out.println("username= "+mEmail);
                 client.AddParam("novapassword", mNewPassword);

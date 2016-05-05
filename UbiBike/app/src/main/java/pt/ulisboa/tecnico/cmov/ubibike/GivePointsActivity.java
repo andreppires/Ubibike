@@ -76,7 +76,7 @@ public class GivePointsActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Void... params) { //todo apenas actualiza os pontos do atual utilizador. Pontos do amigo também têm de ser atualizados.
-            RestClient client = new RestClient("http://andrepirespi.duckdns.org:3000/setpoints");
+            RestClient client = new RestClient("http://10.0.2.3:3000/setpoints");
             client.AddParam("username", mmEmail);
             client.AddParam("points", Integer.toString(mPontos) );
             try {

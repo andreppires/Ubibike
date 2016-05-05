@@ -293,7 +293,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected Boolean doInBackground(Void... params) {
 
-            RestClient client = new RestClient("http://andrepirespi.duckdns.org:3000/user");
+            RestClient client = new RestClient("http://10.0.2.3:3000/user");
             client.AddParam("username", mEmail);
             try {
                 client.Execute(RequestMethod.GET);
@@ -360,7 +360,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            RestClient client = new RestClient("http://andrepirespi.duckdns.org:3000/pontos");
+            RestClient client = new RestClient("http://10.0.2.3:3000/pontos");
             client.AddParam("username", email);
             try {
                 client.Execute(RequestMethod.GET);
