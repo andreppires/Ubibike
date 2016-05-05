@@ -1,0 +1,29 @@
+#cria dos dispositivos virtuais
+newdevice bicla
+newdevice emulador
+
+list emus
+
+# assign network addresses to each emulator
+assignaddr e1
+
+# bind emulators to each virtual device
+binddevice emulador e1
+
+# verify if nodes are online
+ping
+
+# creates a movement event
+move emulador (bicla)
+
+list neighbors
+
+# propagates the network topology
+commit
+
+# creates a group with emulador as group owner
+creategroup emulador (bicla)
+
+list groups
+
+commit

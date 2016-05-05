@@ -1,0 +1,12 @@
+#criacao dos virtual devices para as biclas
+newdevice bicla0
+newdevice bicla1
+newdevice bicla2
+newdevice bicla3
+
+#criacao dos virtual devices para os clientes
+newdevice cliente-ze
+newdevice cliente-maria
+
+#listar os dispositivos: just for debug
+list devices
