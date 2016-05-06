@@ -1,0 +1,54 @@
+<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/map"
+    class="com.androidmapsextensions.SupportMapFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="pt.ulisboa.tecnico.cmov.ubibike.StationsActivity">
+
+        <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|top"
+        android:text="STATION1: BOOK NOW"
+        android:padding="10dp"
+        android:layout_marginTop="20dp"
+        android:paddingRight="10dp"
+            android:visibility="gone"
+
+            android:id="@+id/reservar"
+            />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|top"
+            android:text="STATION2: BOOK NOW"
+            android:padding="10dp"
+            android:layout_marginTop="20dp"
+            android:paddingRight="10dp"
+            android:visibility="gone"
+
+            android:id="@+id/reservar2"
+            />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|top"
+            android:text="STATION3: BOOK NOW "
+            android:padding="10dp"
+            android:layout_marginTop="20dp"
+            android:paddingRight="10dp"
+            android:visibility="gone"
+
+            android:id="@+id/reservar3"
+            />
+
+
+
+
+</fragment>
+
+
