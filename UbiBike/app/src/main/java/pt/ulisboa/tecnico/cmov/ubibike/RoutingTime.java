@@ -25,7 +25,6 @@ import java.util.ArrayList;
 
 import pt.ulisboa.tecnico.cmov.ubibike.App.Peers;
 import pt.ulisboa.tecnico.cmov.ubibike.App.WifiApp;
-import pt.ulisboa.tecnico.cmov.ubibike.AsyngTask.InsertRouteCoordinates;
 
 public class RoutingTime extends FragmentActivity implements OnMapReadyCallback {
 
@@ -204,7 +203,7 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
         lastLocation=null;
         String latitude, longitude;
         String user=Client.getClient().getUsername();
-        InsertRouteCoordinates AssyngPut;
+        //InsertRouteCoordinates AssyngPut;
 
         //Create new route. Get route id to send locations
         //CreateNewRoute newRoute
