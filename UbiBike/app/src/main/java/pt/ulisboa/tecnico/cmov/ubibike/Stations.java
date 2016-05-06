@@ -14,16 +14,18 @@ public final class Stations {
     public Stations(){  //TODO criar um metodo no servidor que retorne as Cordenadas de cada estação.
 
         station1=new Location("Station1");
-        station1.setAltitude(38.75322986);
-        station1.setLongitude(-9.20676827);
+        station1.setLatitude(38.75322833333333);
+        station1.setLongitude(-9.206766666666665);
 
         station2=new Location("Station2");
-        station2.setAltitude(38.75077);
-        station2.setLongitude(-9.19113);
+        station2.setLatitude(38.75077);
+        station2.setLongitude(-9.191128333333333);
 
         station3=new Location("Station3");
-        station3.setAltitude(38.7601071);
-        station3.setLongitude(-9.18283225);
+        station3.setLatitude(38.760106666666665);
+        station3.setLongitude(-9.182831666666667);
+
+        setBiclaIP("0.0.0.0:1");
 
     }
 
@@ -42,7 +44,6 @@ public final class Stations {
     }
 
     public String biclaIP=null;
-
 
     public String getBiclaIP() {
         return biclaIP;

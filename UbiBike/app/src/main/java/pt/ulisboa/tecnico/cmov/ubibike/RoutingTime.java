@@ -23,9 +23,9 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
 
-import pt.ulisboa.tecnico.cmov.ubibike.AsyncTask.CreateNewRoute;
-import pt.ulisboa.tecnico.cmov.ubibike.AsyncTask.InsertRouteCoordinates;
-
+import pt.ulisboa.tecnico.cmov.ubibike.App.Peers;
+import pt.ulisboa.tecnico.cmov.ubibike.App.WifiApp;
+import pt.ulisboa.tecnico.cmov.ubibike.AsyngTask.InsertRouteCoordinates;
 
 public class RoutingTime extends FragmentActivity implements OnMapReadyCallback {
 
@@ -43,6 +43,7 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
     private boolean running=false;
     private boolean mightStopped=false;
     private boolean mightStarting=false;
+    float distance=0;
 
 
     @Override
@@ -101,6 +102,9 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
             double latitude= location.getLatitude();
             double longitude= location.getLongitude();
             System.out.println("latitude= "+ latitude+"\t longitude= "+longitude);
+
+
+            setDistance(location);
             locationsRoute.add(location);
 
             // Instantiates a new Polyline object and adds points to define a rectangle
@@ -130,7 +134,14 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
                 }
             }*/
 
-            Station();
+            BTE(Stations.getStations().biclaIP);
+        }
+
+        public void setDistance(Location loc){
+            if(locationsRoute.size()!=0){
+                distance += locationsRoute.get(locationsRoute.size()-1).distanceTo(loc);
+            }
+
         }
 
         @Override
@@ -159,23 +170,29 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
 
     private boolean BTE(String biclaIP) {
         //verificar se consegue encontrar nos peers o IP da bicla que reservou.
-        return true;
+        ArrayList<Peers> atual = WifiApp.singleton.getConnectedPeersList();
+
+        if(atual != null){
+            for (Peers p : atual){
+                if(p.getVirtualIP().equals(biclaIP)){
+                    System.out.println("Encontrei a bicla!");
+                    return true;
+                }
+            }
+            return false;
+        }else {
+            System.out.println("No Peers!");
+            return false;
+        }
     }
 
     private boolean Station() {
-        //verificar se a sua localização é igual a alguma das estações
-        System.out.println("Deixa-me só verificar se estou numa estação!");
-        System.out.println(locationsRoute.get(locationsRoute.size()-1).getLatitude());
-        System.out.println((Stations.getStations().getStation1().getAltitude()));
-        System.out.println(locationsRoute.get(locationsRoute.size()-1).getLongitude());
-        System.out.println(Stations.getStations().getStation2().getAltitude());
-        if (locationsRoute.get(locationsRoute.size()-1).getAltitude()==(Stations.getStations().getStation1().getAltitude())
+        if (locationsRoute.get(locationsRoute.size()-1).getLatitude()==(Stations.getStations().getStation1().getLatitude())
                 && locationsRoute.get(locationsRoute.size()-1).getLongitude()==(Stations.getStations().getStation1().getLongitude())
-            || locationsRoute.get(locationsRoute.size()-1).getAltitude()==(Stations.getStations().getStation2().getAltitude())
+            || locationsRoute.get(locationsRoute.size()-1).getLatitude()==(Stations.getStations().getStation2().getLatitude())
                 && locationsRoute.get(locationsRoute.size()-1).getLongitude()==(Stations.getStations().getStation2().getLongitude())
-            || locationsRoute.get(locationsRoute.size()-1).getAltitude()==(Stations.getStations().getStation3().getAltitude())
+            || locationsRoute.get(locationsRoute.size()-1).getLatitude()==(Stations.getStations().getStation3().getLatitude())
                 && locationsRoute.get(locationsRoute.size()-1).getLongitude()==(Stations.getStations().getStation3().getLongitude())){
-            System.out.println("estou numa Station! UHUH!");
             return true;
         } else return true;
     }
