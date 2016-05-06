@@ -1,12 +1,24 @@
 package pt.ulisboa.tecnico.cmov.ubibike;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class BikesStation1 extends AppCompatActivity {
 
     GetBikes vaiLaBuscar=null;
+
+    ArrayList<String> bikes = new ArrayList<String>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,7 +31,6 @@ public class BikesStation1 extends AppCompatActivity {
     public void getBikesList() {
         vaiLaBuscar= new GetBikes("Store1");
         vaiLaBuscar.execute();
-        System.out.println("executei!");
     }
 
     /* Ligação ao server
@@ -33,9 +44,9 @@ public class BikesStation1 extends AppCompatActivity {
         }
 
 
+
         @Override
         protected Boolean doInBackground(Void... params) {
-            System.out.println("esotu aquiiii!");
             RestClient client = new RestClient("http://andrepirespi.duckdns.org:3000/bike");
             client.AddParam("stationid", stationid);
             try {
@@ -43,17 +54,27 @@ public class BikesStation1 extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            String response = client.getResponse();
-            System.out.println(response);
 
+            String response = client.getResponse();
+            String[] aux= response.split(",");
+
+            System.out.println(response);
+            System.out.println(aux);
+
+            for (int i=0; i < aux.length ; i++ ) {
+                    String[] st = aux[i].split("\"");
+                    bikes.add(i, st[3]);
+            }
             return true;
         }
+
 
         @Override
         protected void onPostExecute(final Boolean success) {
 
             if (success) {
                 vaiLaBuscar=null;
+                coiso();
             } else {
             }
         }
@@ -62,6 +83,23 @@ public class BikesStation1 extends AppCompatActivity {
         protected void onCancelled() {
             vaiLaBuscar = null;
         }
+    }
+
+    protected void coiso () {
+
+        ListView listBikesStation1= (ListView) findViewById(R.id.listOfBikesInStation1);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(BikesStation1.this, android.R.layout.simple_list_item_1, bikes);
+        listBikesStation1.setAdapter(adapter);
+
+        listBikesStation1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String bikeIP = ((TextView)view).getText().toString();
+                Stations.getStations().setBiclaIP(bikeIP);
+                Intent intent = new Intent(BikesStation1.this, RoutingTime.class);
+                startActivity(intent);
+            }
+        } );
     }
 
 

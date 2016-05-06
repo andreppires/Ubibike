@@ -14,11 +14,7 @@ import java.util.ArrayList;
 
 public class FriendsActivity extends Activity {
 
-
-
     ArrayList<String> arr_friends = new ArrayList<String>();
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +37,6 @@ public class FriendsActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(view.getContext(), FriendProfile.class);
                 startActivity(intent);
-
             }
         } );
     }

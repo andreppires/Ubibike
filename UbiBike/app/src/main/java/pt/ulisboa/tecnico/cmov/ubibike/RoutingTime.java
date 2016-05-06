@@ -24,7 +24,8 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import java.util.ArrayList;
 
 import pt.ulisboa.tecnico.cmov.ubibike.AsyncTask.CreateNewRoute;
-import pt.ulisboa.tecnico.cmov.ubibike.AsyngTask.InsertRouteCoordinates;
+import pt.ulisboa.tecnico.cmov.ubibike.AsyncTask.InsertRouteCoordinates;
+
 
 public class RoutingTime extends FragmentActivity implements OnMapReadyCallback {
 
