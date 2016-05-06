@@ -148,4 +148,13 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="StartRouting!"
+        android:id="@+id/button11"
+        android:onClick="startRouteActivity"
+        android:layout_above="@+id/imageButton2"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

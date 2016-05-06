@@ -62,7 +62,7 @@ def find_near_locations(devs, stts):
 def update_emulator_gps(emu, loc):
 	tn=telnetlib.Telnet('localhost',emu)
 	#time.sleep(1)
-	tn.write("geo fix " + str(loc.latitude).replace(".",",") + " " + str(loc.longitude).replace(".",",") + "\r\n")
+	tn.write("geo fix " + str(loc.longitude).replace(".",",") + " " + str(loc.latitude).replace(".",",") + "\r\n")
 	time.sleep(1)
 	tn.close()
 

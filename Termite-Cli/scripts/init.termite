@@ -4,9 +4,33 @@ newdevice bicla1
 newdevice bicla2
 newdevice bicla3
 
-#criacao dos virtual devices para os clientes
-newdevice cliente-ze
-newdevice cliente-maria
+
+#criacao dos virtualdevices para as stations
+newdevice clienteZe
+newdevice  clienteMaria
+
 
 #listar os dispositivos: just for debug
 list devices
+
+#listar emuladores
+list emus
+
+#dar um endereco virtual ao emulador
+assignaddr e1
+
+#tornar a bicla0 reacheble pelo emulador
+binddevice clienteZe e1
+
+#ping for debugging
+ping
+
+#mover o cliente para junto da bicla0
+move clienteZe (bicla0)
+
+#listar vizinhos
+list neighbors
+
+#propagar a topologia da rede
+commit
+#neste ponto assume-se que o cliente/emulador está na estação 1 e pegou na bicicleta1 pronto para dar uma voltinha[... até à estação 2]
