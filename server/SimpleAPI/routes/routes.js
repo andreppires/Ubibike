@@ -34,6 +34,24 @@ var appRouter = function(app) {
 		}
 	});
 
+	app.get("/availableStations", function(req, res) {
+		
+				connection.query('SELECT localizacao FROM bicicleta WHERE status = false GROUP BY localizacao', function(err, rows, fields) {
+				  if (err){
+					if (err.code === 'PROTOCOL_SEQUENCE_TIMEOUT') {
+						node.exit();
+                    }
+					res.status(203).send("Wrong query");
+				}else {
+					res.status(202).send(rows);
+					console.log(rows);
+				}
+
+			});
+		});
+	
+
+
 	app.get("/pontos", function(req, res) {
 			if(!req.query.username) {
         	return res.send({"status": "error", "message": "missing username"});

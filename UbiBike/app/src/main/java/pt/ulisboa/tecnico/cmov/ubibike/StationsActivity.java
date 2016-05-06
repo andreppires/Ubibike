@@ -1,6 +1,7 @@
 package pt.ulisboa.tecnico.cmov.ubibike;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -13,13 +14,19 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.ArrayList;
+
 public class StationsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap mMap;
 
+    GetStations getsts = null;
+
     private double istLat=38.752694;
     private double istLong=-9.184699;
     private LatLng IST = new LatLng(istLat, istLong);
+
+    ArrayList<String> stationsList = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +36,8 @@ public class StationsActivity extends FragmentActivity implements OnMapReadyCall
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getExtendedMapAsync(this);
+
+        getStationsList();
 
         final Button buttonReservar = (Button) findViewById(R.id.reservar);
         final Button buttonReservar2 = (Button) findViewById(R.id.reservar2);
@@ -61,12 +70,10 @@ public class StationsActivity extends FragmentActivity implements OnMapReadyCall
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        final Button buttonReservar = (Button) findViewById(R.id.reservar);
-        final Button buttonReservar2 = (Button) findViewById(R.id.reservar2);
-        final Button buttonReservar3 = (Button) findViewById(R.id.reservar3);
 
         mMap = googleMap;
         setUpMap();
+
 
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(IST)                // Sets the center of the map to Mountain View
@@ -76,11 +83,12 @@ public class StationsActivity extends FragmentActivity implements OnMapReadyCall
                 .build();                   // Creates a CameraPosition from the builder
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
-
-
     }
 
     private void setUpMap() {
+
+        System.out.println("EM SETUPMAP A LISTA É A SEGUINTE");
+        System.out.println(stationsList);
 
         Marker station1marker = mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(38.75322986, -9.20676827))
@@ -94,11 +102,24 @@ public class StationsActivity extends FragmentActivity implements OnMapReadyCall
                 .position(new LatLng(38.7601071, -9.18283225))
                 .title("Station 3"));
 
+        station1marker.setVisible(false);
+        station2marker.setVisible(false);
+        station3marker.setVisible(false);
+
+        if(stationsList.contains("Store1"))
+            station1marker.setVisible(true);
+        if(stationsList.contains("Store2"))
+            station2marker.setVisible(true);
+        if(stationsList.contains("Store3"))
+            station3marker.setVisible(true);
+
         mMap.setOnMarkerClickListener(this);
 
         station1marker.setData(station1MarkerClickListener);
         station2marker.setData(station2MarkerClickListener);
         station3marker.setData(station3MarkerClickListener);
+
+
 
     }
 
@@ -147,6 +168,61 @@ public class StationsActivity extends FragmentActivity implements OnMapReadyCall
     public boolean onMarkerClick(Marker marker) {
         GoogleMap.OnMarkerClickListener listener = marker.getData();
         return listener.onMarkerClick(marker);
+    }
+
+    public void getStationsList() {
+        getsts = new GetStations("stations");
+        getsts.execute();
+    }
+
+    class GetStations extends AsyncTask<Void, Void, Boolean> {
+
+        private String stations=null;
+        public GetStations(String e){
+            this.stations=e;
+        }
+
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            RestClient client = new RestClient("http://andrepirespi.duckdns.org:3000/availableStations");
+
+            try {
+                client.Execute(RequestMethod.GET);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            String response = client.getResponse();
+            System.out.println(response);
+
+            if (response.contains(","))
+            {
+                String[] aux= response.split(",");
+
+                for (int i=0; i < aux.length ; i++ ) {
+                    String[] st = aux[i].split("\"");
+                    stationsList.add(i, st[3]);
+                }
+
+                System.out.println(stationsList);
+                return true;
+            } else
+                return false;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+
+            if (success) {
+            } else {
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+
+        }
     }
 
 

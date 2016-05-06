@@ -1,5 +1,6 @@
 package pt.ulisboa.tecnico.cmov.ubibike;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +18,6 @@ import java.util.Arrays;
 public class BikesStation1 extends AppCompatActivity {
 
     GetBikes vaiLaBuscar=null;
-
     ArrayList<String> bikes = new ArrayList<String>();
 
 
@@ -24,8 +25,8 @@ public class BikesStation1 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bikes_station1);
-
         getBikesList();
+
     }
 
     public void getBikesList() {
@@ -56,16 +57,20 @@ public class BikesStation1 extends AppCompatActivity {
             }
 
             String response = client.getResponse();
-            String[] aux= response.split(",");
 
-            System.out.println(response);
-            System.out.println(aux);
+            if (response.contains(",")) {
+                String[] aux= response.split(",");
 
-            for (int i=0; i < aux.length ; i++ ) {
+                System.out.println(response);
+                System.out.println(aux);
+
+                for (int i=0; i < aux.length ; i++ ) {
                     String[] st = aux[i].split("\"");
                     bikes.add(i, st[3]);
-            }
-            return true;
+                }
+                return true;
+            } else
+                return false;
         }
 
 
@@ -76,6 +81,13 @@ public class BikesStation1 extends AppCompatActivity {
                 vaiLaBuscar=null;
                 coiso();
             } else {
+                runOnUiThread(new Runnable()
+                {
+                    public void run() {
+                        Context context = getApplicationContext();
+                        Toast.makeText(context, "Não existem bicicletas disponíveis nesta estação", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         }
 
@@ -99,7 +111,7 @@ public class BikesStation1 extends AppCompatActivity {
                 Intent intent = new Intent(BikesStation1.this, RoutingTime.class);
                 startActivity(intent);
             }
-        } );
+        });
     }
 
 

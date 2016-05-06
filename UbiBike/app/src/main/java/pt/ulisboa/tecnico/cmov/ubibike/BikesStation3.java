@@ -1,18 +1,127 @@
 package pt.ulisboa.tecnico.cmov.ubibike;
 
-import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.content.Context;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class BikesStation3 extends AppCompatActivity {
+
+    GetBikes vaiLaBuscar=null;
+
+    ArrayList<String> bikes = new ArrayList<String>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bikes_station3);
+
+        getBikesList();
     }
+
+    public void getBikesList() {
+        vaiLaBuscar= new GetBikes("Store3");
+        vaiLaBuscar.execute();
+    }
+
+    /* Ligação ao server
+     */
+
+    class GetBikes extends AsyncTask<Void, Void, Boolean> {
+
+        private String stationid=null;
+        public GetBikes(String e){
+            this.stationid=e;
+        }
+
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            RestClient client = new RestClient("http://andrepirespi.duckdns.org:3000/bike");
+            client.AddParam("stationid", stationid);
+            try {
+                client.Execute(RequestMethod.GET);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            String response = client.getResponse();
+
+            System.out.println(response);
+            if (response.contains(",")) {
+                String[] aux= response.split(",");
+
+                for (int i=0; i < aux.length ; i++ ) {
+                    String[] st = aux[i].split("\"");
+                    bikes.add(i, st[3]);
+                }
+
+            } else {
+                /*runOnUiThread(new Runnable()
+                {
+                    public void run() {
+                        Context context = getApplicationContext();
+                        Toast.makeText(context, "Não existem bicicletas disponíveis nesta estação", Toast.LENGTH_SHORT).show();
+                    }
+
+                    });*/
+                return false;
+
+            }
+            return true;
+        }
+
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+
+            if (success) {
+                vaiLaBuscar=null;
+                coiso();
+            } else {
+                runOnUiThread(new Runnable()
+                {
+                    public void run() {
+                        Context context = getApplicationContext();
+                        Toast.makeText(context, "Não existem bicicletas disponíveis nesta estação", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            vaiLaBuscar = null;
+        }
+    }
+
+    protected void coiso () {
+
+        ListView listBikesStation3= (ListView) findViewById(R.id.listOfBikesInStation1);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(BikesStation3.this, android.R.layout.simple_list_item_1, bikes);
+        listBikesStation3.setAdapter(adapter);
+
+        listBikesStation3.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String bikeIP = ((TextView)view).getText().toString();
+                Stations.getStations().setBiclaIP(bikeIP);
+                Intent intent = new Intent(BikesStation3.this, RoutingTime.class);
+                startActivity(intent);
+            }
+        } );
+    }
+
 
 }
