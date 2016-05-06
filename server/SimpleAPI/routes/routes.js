@@ -124,6 +124,26 @@ app.post("/updatepass", function(req, res){
 					}
 				});
 
+		app.get("/bike", function(req, res) {
+			if(!req.query.stationid) {
+        	return res.send({"status": "error", "message": "missing stationid"});
+    	}
+			else {
+				connection.query('SELECT bikeid FROM bicicleta WHERE bicicleta.localizacao =\''+req.query.stationid+'\'AND status = false;', function(err, rows, fields) {
+				  if (err){
+					if (err.code === 'PROTOCOL_SEQUENCE_TIMEOUT') {
+						node.exit();
+                    }
+					res.status(203).send("Wrong query");
+				}else {
+					res.status(202).send(rows);
+					console.log(rows);
+				}
+
+			});
+		}
+	});
+
 }
 
 module.exports = appRouter;

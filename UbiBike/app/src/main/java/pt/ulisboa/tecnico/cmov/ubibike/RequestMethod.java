@@ -13,7 +13,7 @@ package pt.ulisboa.tecnico.cmov.ubibike;
    limitations under the License.
  */
 
-enum RequestMethod {
+public enum RequestMethod {
     GET("GET"), PUT("PUT"), POST("POST"), DELETE("DELETE"), OPTIONS("OPTIONS"), HEAD("HEAD"), TRACE("TRACE"), UNKNOWN(
             "UNKNOWN");
 

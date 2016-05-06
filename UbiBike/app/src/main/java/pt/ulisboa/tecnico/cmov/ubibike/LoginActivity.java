@@ -339,8 +339,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     public void homeActivity() {
-        GetPoints vailabuscar = new GetPoints(email);
-        vailabuscar.execute();
+        //GetPoints vailabuscar = new GetPoints(email);
+        //vailabuscar.execute();
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
 
