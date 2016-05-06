@@ -144,4 +144,10 @@ public class HomeActivity extends AppCompatActivity {
             Toast.makeText(this, "Wifi unBounded", Toast.LENGTH_SHORT);
         }
     }
+
+    public void startRouteActivity(View view) {
+        Intent intent = new Intent(this, RoutingTime.class);
+        startActivity(intent);
+    }
+
 }
