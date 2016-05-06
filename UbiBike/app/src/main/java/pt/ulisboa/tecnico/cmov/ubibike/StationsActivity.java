@@ -21,6 +21,7 @@ public class StationsActivity extends FragmentActivity implements OnMapReadyCall
     private GoogleMap mMap;
 
     GetStations getsts = null;
+    boolean wait=true;
 
     private double istLat=38.752694;
     private double istLong=-9.184699;
@@ -30,6 +31,8 @@ public class StationsActivity extends FragmentActivity implements OnMapReadyCall
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        getStationsList();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stations);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -37,7 +40,7 @@ public class StationsActivity extends FragmentActivity implements OnMapReadyCall
                 .findFragmentById(R.id.map);
         mapFragment.getExtendedMapAsync(this);
 
-        getStationsList();
+
 
         final Button buttonReservar = (Button) findViewById(R.id.reservar);
         final Button buttonReservar2 = (Button) findViewById(R.id.reservar2);
@@ -72,7 +75,9 @@ public class StationsActivity extends FragmentActivity implements OnMapReadyCall
     public void onMapReady(GoogleMap googleMap) {
 
         mMap = googleMap;
-        setUpMap();
+        while (wait){
+            System.out.println("wait from server");
+        }
 
 
         CameraPosition cameraPosition = new CameraPosition.Builder()
@@ -83,6 +88,7 @@ public class StationsActivity extends FragmentActivity implements OnMapReadyCall
                 .build();                   // Creates a CameraPosition from the builder
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
+        setUpMap();
     }
 
     private void setUpMap() {
@@ -215,6 +221,7 @@ public class StationsActivity extends FragmentActivity implements OnMapReadyCall
         protected void onPostExecute(final Boolean success) {
 
             if (success) {
+                wait=false;
             } else {
             }
         }

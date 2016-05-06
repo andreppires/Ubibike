@@ -7,7 +7,6 @@ var appRouter = function(app) {
 	  password : 'jkiz2179',
 	  database : 'ist173932'
 	});
-	connection.connect();
 
 	/////////////////////////////////////
 	app.get("/", function(req, res) {
@@ -35,7 +34,7 @@ var appRouter = function(app) {
 	});
 
 	app.get("/availableStations", function(req, res) {
-		
+
 				connection.query('SELECT localizacao FROM bicicleta WHERE status = false GROUP BY localizacao', function(err, rows, fields) {
 				  if (err){
 					if (err.code === 'PROTOCOL_SEQUENCE_TIMEOUT') {
@@ -81,7 +80,7 @@ var appRouter = function(app) {
 					if (err.code === 'PROTOCOL_SEQUENCE_TIMEOUT') {
 						node.exit();
 										}
-					res.status(203).send("Wrong with de database");
+					res.status(203).send("Wrong with the database");
 				}else {
 					res.status(200).send("OK");
 					console.log(rows);
@@ -100,7 +99,7 @@ var appRouter = function(app) {
 				if (err.code === 'PROTOCOL_SEQUENCE_TIMEOUT') {
 					node.exit();
 									}
-				res.status(203).send("Wrong with de database");
+				res.status(203).send("Wrong with the database");
 			}
 			res.status(200).send("OK");
 			console.log(rows);
@@ -124,6 +123,8 @@ app.post("/updatepass", function(req, res){
 					});
 			}
 		});
+
+
 
 		app.post("/setpoints", function(req, res){
 			if(!req.body.username || !req.body.points) {
@@ -161,6 +162,23 @@ app.post("/updatepass", function(req, res){
 			});
 		}
 	});
+
+	app.post("/pickUp", function(req, res){
+			if(!req.body.bikeid) {
+					return res.send({"status": "error", "message": "missing bikeid"});
+			}else {
+				connection.query('UPDATE bicicleta SET status = 1 where bikeid = \''+req.body.bikeid+'\';', function(err, rows, fields) {
+									if (err){
+										if (err.code === 'PROTOCOL_SEQUENCE_TIMEOUT') {
+											node.exit();
+										}
+										res.status(203).send("Wrong query");
+									}else {
+										res.status(200).send('OK');
+									}
+							});
+					}
+				});
 
 }
 

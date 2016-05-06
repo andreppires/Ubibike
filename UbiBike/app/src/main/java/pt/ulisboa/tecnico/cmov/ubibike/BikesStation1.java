@@ -18,6 +18,7 @@ import java.util.Arrays;
 public class BikesStation1 extends AppCompatActivity {
 
     GetBikes vaiLaBuscar=null;
+    PostPickUp postPickUp = null;
     ArrayList<String> bikes = new ArrayList<String>();
 
 
@@ -107,12 +108,54 @@ public class BikesStation1 extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String bikeIP = ((TextView)view).getText().toString();
+
                 Stations.getStations().setBiclaIP(bikeIP);
+                PostPickUp postPickUp = new PostPickUp(bikeIP);
+                postPickUp.execute();
+
                 Intent intent = new Intent(BikesStation1.this, RoutingTime.class);
                 startActivity(intent);
             }
         });
     }
+
+
+    class PostPickUp extends AsyncTask<Void, Void, Boolean>{
+
+        private final String bikeid;
+
+        PostPickUp(String pickedUpbikeid) {
+            bikeid = pickedUpbikeid;
+
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) { //todo apenas actualiza os pontos do atual utilizador. Pontos do amigo também têm de ser atualizados.
+            RestClient client = new RestClient("http://andrepirespi.duckdns.org:3000/pickUp");
+            client.AddParam("bikeid", bikeid);
+
+            try {
+                client.Execute(RequestMethod.POST);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            String response = client.getResponse();
+
+            if(!response.contains("OK")){
+                return true;
+            }else {
+                return false;
+            }
+        }
+
+
+        @Override
+        protected void onCancelled() {
+            postPickUp = null;
+        }
+    }
+
 
 
 }
