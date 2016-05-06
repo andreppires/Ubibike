@@ -12,15 +12,14 @@
 
     <uses-feature android:name="android.hardware.wifi.direct" />
 
-
-
-    <application tools:replace="android:icon"
+    <application
+        android:name=".App.WifiApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:name=".App.WifiApp"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:replace="android:icon">
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,8 +27,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service
-            android:name="pt.inesc.termite.wifidirect.service.SimWifiP2pService" />
+
+        <service android:name="pt.inesc.termite.wifidirect.service.SimWifiP2pService" />
+
         <activity android:name=".AddAFriend" />
         <activity android:name=".TakeMeToBike" />
         <activity android:name=".FriendProfile" />
@@ -40,11 +40,25 @@
         <activity android:name=".BikesNeirby" />
         <activity android:name=".MyProfile" />
         <activity android:name=".ChangePassword" />
-        <activity android:name=".StationActivity" />
+        <activity android:name=".StationsActivity" />
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" />
-        <activity android:name=".EditProfile"></activity>
+        <activity android:name=".EditProfile" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDEiigAJRmtgtDpHDolNWPYapGOyuzQGB4" />
+
+        <activity android:name=".BikesStation1" />
+        <activity
+            android:name=".BikesStation2"
+            android:label="@string/title_activity_bikes_station2"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".BikesStation3"
+            android:label="@string/title_activity_bikes_station3"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
