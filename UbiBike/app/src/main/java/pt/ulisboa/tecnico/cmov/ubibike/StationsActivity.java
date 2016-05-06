@@ -20,18 +20,13 @@ public class StationsActivity extends FragmentActivity implements OnMapReadyCall
 
     private GoogleMap mMap;
 
-    GetStations getsts = null;
-    boolean wait=true;
-
     private double istLat=38.752694;
     private double istLong=-9.184699;
     private LatLng IST = new LatLng(istLat, istLong);
 
-    ArrayList<String> stationsList = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        getStationsList();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stations);
@@ -75,10 +70,6 @@ public class StationsActivity extends FragmentActivity implements OnMapReadyCall
     public void onMapReady(GoogleMap googleMap) {
 
         mMap = googleMap;
-        while (wait){
-            System.out.println("wait from server");
-        }
-
 
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(IST)                // Sets the center of the map to Mountain View
@@ -94,7 +85,7 @@ public class StationsActivity extends FragmentActivity implements OnMapReadyCall
     private void setUpMap() {
 
         System.out.println("EM SETUPMAP A LISTA É A SEGUINTE");
-        System.out.println(stationsList);
+        System.out.println(Stations.getStations().getStationsList());
 
         Marker station1marker = mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(38.75322986, -9.20676827))
@@ -112,11 +103,11 @@ public class StationsActivity extends FragmentActivity implements OnMapReadyCall
         station2marker.setVisible(false);
         station3marker.setVisible(false);
 
-        if(stationsList.contains("Store1"))
+        if(Stations.getStations().getStationsList().contains("Store1"))
             station1marker.setVisible(true);
-        if(stationsList.contains("Store2"))
+        if(Stations.getStations().getStationsList().contains("Store2"))
             station2marker.setVisible(true);
-        if(stationsList.contains("Store3"))
+        if(Stations.getStations().getStationsList().contains("Store3"))
             station3marker.setVisible(true);
 
         mMap.setOnMarkerClickListener(this);
@@ -175,62 +166,5 @@ public class StationsActivity extends FragmentActivity implements OnMapReadyCall
         GoogleMap.OnMarkerClickListener listener = marker.getData();
         return listener.onMarkerClick(marker);
     }
-
-    public void getStationsList() {
-        getsts = new GetStations("stations");
-        getsts.execute();
-    }
-
-    class GetStations extends AsyncTask<Void, Void, Boolean> {
-
-        private String stations=null;
-        public GetStations(String e){
-            this.stations=e;
-        }
-
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            RestClient client = new RestClient("http://andrepirespi.duckdns.org:3000/availableStations");
-
-            try {
-                client.Execute(RequestMethod.GET);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            String response = client.getResponse();
-            System.out.println(response);
-
-            if (response.contains(","))
-            {
-                String[] aux= response.split(",");
-
-                for (int i=0; i < aux.length ; i++ ) {
-                    String[] st = aux[i].split("\"");
-                    stationsList.add(i, st[3]);
-                }
-
-                System.out.println(stationsList);
-                return true;
-            } else
-                return false;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-
-            if (success) {
-                wait=false;
-            } else {
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-
-        }
-    }
-
 
 }

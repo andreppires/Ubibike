@@ -23,6 +23,7 @@ import pt.ulisboa.tecnico.cmov.ubibike.App.Peers;
 import pt.ulisboa.tecnico.cmov.ubibike.App.WifiApp;
 import pt.ulisboa.tecnico.cmov.ubibike.AsyncTask.ReceiveCommTask;
 
+
 public class HomeActivity extends AppCompatActivity {
 
     private Button mButton;
@@ -53,6 +54,8 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void stationActivity(View view) {
+        GetStations getsts = new GetStations("stations");
+        getsts.execute();
         Intent intent = new Intent(this, StationsActivity.class);
         startActivity(intent);
     }
@@ -148,6 +151,59 @@ public class HomeActivity extends AppCompatActivity {
     public void startRouteActivity(View view) {
         Intent intent = new Intent(this, RoutingTime.class);
         startActivity(intent);
+    }
+
+
+
+
+    class GetStations extends AsyncTask<Void, Void, Boolean> {
+
+        private String stations=null;
+        public GetStations(String e){
+            this.stations=e;
+        }
+
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            RestClient client = new RestClient("http://andrepirespi.duckdns.org:3000/availableStations");
+
+            try {
+                client.Execute(RequestMethod.GET);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            String response = client.getResponse();
+            System.out.println(response);
+
+            if (response.contains(","))
+            {
+                String[] aux= response.split(",");
+
+                for (int i=0; i < aux.length ; i++ ) {
+                    String[] st = aux[i].split("\"");
+                    Stations.getStations().addStationsList( st[3]);
+                }
+
+                System.out.println(Stations.getStations().getStationsList());
+                return true;
+            } else
+                return false;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+
+            if (success) {
+            } else {
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+
+        }
     }
 
 }

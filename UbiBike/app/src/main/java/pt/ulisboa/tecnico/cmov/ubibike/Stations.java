@@ -2,6 +2,8 @@ package pt.ulisboa.tecnico.cmov.ubibike;
 
 import android.location.Location;
 
+import java.util.ArrayList;
+
 /**
  * Created by andreppires on 05-05-2016.
  */
@@ -52,4 +54,15 @@ public final class Stations {
     public void setBiclaIP(String biclaIP) {
         this.biclaIP = biclaIP;
     }
+
+    public ArrayList<String> getStationsList() {
+        return stationsList;
+    }
+
+    public void addStationsList(String s) {
+        this.stationsList.add(s);
+    }
+
+    ArrayList<String> stationsList = new ArrayList<String>();
+
 }

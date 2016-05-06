@@ -48,7 +48,7 @@ var appRouter = function(app) {
 
 			});
 		});
-	
+
 
 
 	app.get("/pontos", function(req, res) {

@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -50,21 +51,25 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_routing_time);
 
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        listener = new LocationUpdateListener();
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, listener);
+          //Request Permissions
+
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
+            //Still granted?
+            checkLocationPermission();
+            checkLocationPermissionOutra();
+
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, listener);
+
+
         // Get a handle to the Map Fragment
         mMap = ((SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map)).getMap();
 
         mMap.setMyLocationEnabled(true);
-
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        listener = new LocationUpdateListener();
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, listener);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
-                PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions();
-        }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, listener);
 
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(IST)                // Sets the center of the map to Mountain View
@@ -74,18 +79,6 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
                 .build();                   // Creates a CameraPosition from the builder
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
-    }
-
-    private void requestPermissions() {//todo not entirety working
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
-                    return;
-                } else {
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 2);
-                }
-            }
-        }
     }
 
     @Override
@@ -173,6 +166,7 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
 
         if(atual != null){
             for (Peers p : atual){
+
                 if(p.getVirtualIP().equals(biclaIP)){
                     System.out.println("Encontrei a bicla!");
                     return true;
@@ -215,5 +209,36 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
             //AssyngPut= new InsertRouteCoordinates()
 
         }
+    }
+
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
+
+    public boolean checkLocationPermission()
+    {
+        String permission = "android.permission.ACCESS_FINE_LOCATION";
+        int res = this.checkCallingOrSelfPermission(permission);
+        return (res == PackageManager.PERMISSION_GRANTED);
+    }
+    public boolean checkLocationPermissionOutra()
+    {
+        String permission = "android.permission.ACCESS_COARSE_LOCATION";
+        int res = this.checkCallingOrSelfPermission(permission);
+        return (res == PackageManager.PERMISSION_GRANTED);
     }
 }
