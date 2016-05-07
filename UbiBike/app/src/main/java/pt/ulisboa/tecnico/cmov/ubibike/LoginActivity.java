@@ -180,9 +180,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            //todo apenas para não haver problemas com o servidor
-            //mAuthTask = new UserLoginTask(email, password);
-            //mAuthTask.execute((Void) null);
+            mAuthTask = new UserLoginTask(email, password);
+            mAuthTask.execute((Void) null);
             homeActivity();
             finish();
         }
@@ -296,7 +295,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected Boolean doInBackground(Void... params) {
 
-            RestClient client = new RestClient("http://10.0.2.3:3000/user");
+            RestClient client = new RestClient("http://andrepirespi.duckdns.org:3000/user");
             client.AddParam("username", mEmail);
             try {
                 client.Execute(RequestMethod.GET);
@@ -339,8 +338,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     public void homeActivity() {
-        //GetPoints vailabuscar = new GetPoints(email);
-        //vailabuscar.execute();
+        Client.setClient(new Client(email, 0));
+        GetPoints vailabuscar = new GetPoints(email);
+        vailabuscar.execute();
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
 
@@ -386,7 +386,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
-                Client.setClient(new Client(email, pontos));
+                Client.getClient().setPontos(pontos);
                 finish();
             } else {
                 mPasswordView.setError("Error with the Server. Try Again later");
