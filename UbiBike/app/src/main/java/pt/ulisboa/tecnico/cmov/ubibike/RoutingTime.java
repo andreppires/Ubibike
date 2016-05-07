@@ -24,9 +24,6 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
 
-import pt.ulisboa.tecnico.cmov.ubibike.App.Peers;
-import pt.ulisboa.tecnico.cmov.ubibike.App.WifiApp;
-
 public class RoutingTime extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
@@ -126,7 +123,7 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
                 }
             }*/
 
-            BTE(Stations.getStations().biclaIP);
+            //BTE(Stations.getStations().biclaIP);
         }
 
         public void setDistance(Location loc){
@@ -160,24 +157,24 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
         //start saving the locations
     }
 
-    private boolean BTE(String biclaIP) {
-        //verificar se consegue encontrar nos peers o IP da bicla que reservou.
-        ArrayList<Peers> atual = WifiApp.singleton.getConnectedPeersList();
-
-        if(atual != null){
-            for (Peers p : atual){
-
-                if(p.getVirtualIP().equals(biclaIP)){
-                    System.out.println("Encontrei a bicla!");
-                    return true;
-                }
-            }
-            return false;
-        }else {
-            System.out.println("No Peers!");
-            return false;
-        }
-    }
+//    private boolean BTE(String biclaIP) {
+//        //verificar se consegue encontrar nos peers o IP da bicla que reservou.
+//        ArrayList<Peers> atual = WifiApp.singleton.getConnectedPeersList();
+//
+//        if(atual != null){
+//            for (Peers p : atual){
+//
+//                if(p.getVirtualIP().equals(biclaIP)){
+//                    System.out.println("Encontrei a bicla!");
+//                    return true;
+//                }
+//            }
+//            return false;
+//        }else {
+//            System.out.println("No Peers!");
+//            return false;
+//        }
+//    }
 
     private boolean Station() {
         if (locationsRoute.get(locationsRoute.size()-1).getLatitude()==(Stations.getStations().getStation1().getLatitude())
