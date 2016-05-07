@@ -373,9 +373,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             String response = client.getResponse();
             if(response.contains("pontos")){
-                System.out.println(response);
+
                 String[] aux= response.split(":");
-                System.out.println(aux[1]);
+
                 String[] aux1= aux[1].split("\\}");
                 pontos = Integer.parseInt(aux1[0]);
 

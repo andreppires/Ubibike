@@ -81,14 +81,6 @@ public class BikesStation2 extends AppCompatActivity {
             if (success) {
                 vaiLaBuscar=null;
                 coiso();
-            } else {
-                runOnUiThread(new Runnable()
-                {
-                    public void run() {
-                        Context context = getApplicationContext();
-                        Toast.makeText(context, "Não existem bicicletas disponíveis nesta estação", Toast.LENGTH_SHORT).show();
-                    }
-                });
             }
         }
 

@@ -1,5 +1,7 @@
 package pt.ulisboa.tecnico.cmov.ubibike;
 
+import java.util.ArrayList;
+
 /**
  * Created by andreppires on 27-04-2016.
  */
@@ -26,6 +28,16 @@ public final class Client {
 
     String username=null;
 
+    protected ArrayList<String> friends = null;
+
+    public ArrayList<String> getFriends() {
+        return friends;
+    }
+
+    public void addFriends(String friendUsername) {
+        this.friends.add(friendUsername);
+    }
+
     public int getPontos() {
         return pontos;
     }
@@ -39,6 +51,7 @@ public final class Client {
     public Client(String u, int p){
         this.username=u;
         this.pontos=p;
+        this.friends=new ArrayList<String>();
     }
 
 }

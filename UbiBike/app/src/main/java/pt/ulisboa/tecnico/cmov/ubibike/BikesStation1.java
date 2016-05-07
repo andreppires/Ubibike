@@ -70,7 +70,10 @@ public class BikesStation1 extends AppCompatActivity {
                     bikes.add(i, st[3]);
                 }
                 return true;
-            } else
+            } else if (response.contains("{")) {
+                return true;
+
+            }
                 return false;
         }
 
@@ -81,14 +84,6 @@ public class BikesStation1 extends AppCompatActivity {
             if (success) {
                 vaiLaBuscar=null;
                 coiso();
-            } else {
-                runOnUiThread(new Runnable()
-                {
-                    public void run() {
-                        Context context = getApplicationContext();
-                        Toast.makeText(context, "Não existem bicicletas disponíveis nesta estação", Toast.LENGTH_SHORT).show();
-                    }
-                });
             }
         }
 
