@@ -163,6 +163,26 @@ app.post("/updatepass", function(req, res){
 		}
 	});
 
+		app.get("/myfriends", function(req, res) {
+			if(!req.query.username) {
+        	return res.send({"status": "error", "message": "missing username"});
+    	}
+			else {
+				connection.query('SELECT username2 FROM amigos WHERE username1=\''+req.query.username+'\';', function(err, rows, fields) {
+				  if (err){
+					if (err.code === 'PROTOCOL_SEQUENCE_TIMEOUT') {
+						node.exit();
+                    }
+					res.status(203).send("Wrong query");
+				}else {
+					res.status(200).send(rows);
+					console.log(rows);
+				}
+
+			});
+		}
+	});
+
 	app.post("/pickUp", function(req, res){
 			if(!req.body.bikeid) {
 					return res.send({"status": "error", "message": "missing bikeid"});
