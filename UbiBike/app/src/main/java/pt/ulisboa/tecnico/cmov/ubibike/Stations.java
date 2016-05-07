@@ -65,4 +65,15 @@ public final class Stations {
 
     ArrayList<String> stationsList = new ArrayList<String>();
 
+
+    public int getRouteID() {
+        return routeID;
+    }
+
+    public void setRouteID(int routeID) {
+        this.routeID = routeID;
+    }
+
+    private int routeID=0;
+
 }

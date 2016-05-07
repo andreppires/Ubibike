@@ -119,6 +119,7 @@ app.post("/updatepass", function(req, res){
 								res.status(203).send("Wrong query");
 							}else {
 								res.status(200).send('OK');
+								console.log(rows);
 							}
 					});
 			}
@@ -138,6 +139,7 @@ app.post("/updatepass", function(req, res){
 										res.status(203).send("Wrong query");
 									}else {
 										res.status(200).send('OK');
+										console.log(rows);
 									}
 							});
 					}
@@ -195,10 +197,47 @@ app.post("/updatepass", function(req, res){
 										res.status(203).send("Wrong query");
 									}else {
 										res.status(200).send('OK');
+										console.log(rows);
 									}
-							});
-					}
 				});
+			}
+	});
+
+	app.post("/newroute", function(req, res){
+			if(!req.body.bikeid || !req.body.username) {
+					return res.send({"status": "error", "message": "missing bikeid"});
+			}else {
+				connection.query('INSERT INTO rotas (username, bikeid) VALUES(\''+req.body.username+'\' ,\''+req.body.bikeid+'\');', function(err, rows, fields) {
+									if (err){
+										if (err.code === 'PROTOCOL_SEQUENCE_TIMEOUT') {
+											node.exit();
+										}
+										res.status(203).send("Wrong query");
+									}else {
+										res.status(200).send('rows.insertId');
+										console.log(rows);
+									}
+				});
+			}
+	});
+
+	app.post("/adicionarcoordenada", function(req, res){
+			if(!req.body.longitude || !req.body.latitude || !req.body.routeid) {
+					return res.send({"status": "error", "message": "missing bikeid"});
+			}else {
+				connection.query('INSERT INTO coordenadas (rota, latitude, longitude) VALUES(\''+req.body.routeid+'\' ,\''+req.body.latitude+'\',\''+req.body.longitude+'\');', function(err, rows, fields) {
+									if (err){
+										if (err.code === 'PROTOCOL_SEQUENCE_TIMEOUT') {
+											node.exit();
+										}
+										res.status(203).send("Wrong query");
+									}else {
+										res.status(200).send('OK');
+										console.log(rows);
+									}
+				});
+			}
+	});
 
 }
 
