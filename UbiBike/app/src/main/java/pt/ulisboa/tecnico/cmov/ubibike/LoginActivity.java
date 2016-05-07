@@ -363,27 +363,31 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            RestClient client = new RestClient("http://10.0.2.3:3000/pontos");
+            RestClient client = new RestClient("http://andrepirespi.duckdns.org:3000/pontos");
             client.AddParam("username", email);
             try {
                 client.Execute(RequestMethod.GET);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            String response = client.getResponse();
-            System.out.println(response);
-            String[] aux= response.split(":");
-            System.out.println(aux[1]);
-            String[] aux1= aux[1].split("\\}");
-            pontos = Integer.parseInt(aux1[0]);
 
-            return true;
+            String response = client.getResponse();
+            if(response.contains("pontos")){
+                System.out.println(response);
+                String[] aux= response.split(":");
+                System.out.println(aux[1]);
+                String[] aux1= aux[1].split("\\}");
+                pontos = Integer.parseInt(aux1[0]);
+
+                return true;
+
+            }else return false;
+
         }
 
         @Override
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
-            showProgress(false);
 
             if (success) {
                 Client.getClient().setPontos(pontos);
