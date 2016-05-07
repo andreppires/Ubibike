@@ -6,19 +6,18 @@ import pt.inesc.termite.wifidirect.sockets.SimWifiP2pSocket;
 import pt.ulisboa.tecnico.cmov.ubibike.Client;
 import pt.ulisboa.tecnico.cmov.ubibike.RequestMethod;
 import pt.ulisboa.tecnico.cmov.ubibike.RestClient;
+import pt.ulisboa.tecnico.cmov.ubibike.Stations;
 
 /**
  * Created by andreppires on 05-05-2016.
  */
 public class InsertRouteCoordinates extends AsyncTask<Void, Void, Boolean> {
-    private String email=null;
     private String lat=null;
     private String route=null;
     private String longt=null;
 
 
-    public InsertRouteCoordinates(String username, String latitude, String routeid, String longitude){
-        this.email=username;
+    public InsertRouteCoordinates( String latitude, String routeid, String longitude){
         this.lat=latitude;
         this.longt=longitude;
         this.route=routeid;
@@ -26,8 +25,7 @@ public class InsertRouteCoordinates extends AsyncTask<Void, Void, Boolean> {
 
     @Override
     protected Boolean doInBackground(Void... params) {//TODO
-        RestClient client = new RestClient("http://10.0.2.3:3000/route");
-        client.AddParam("username", email);
+        RestClient client = new RestClient("http://andrepirespi.duckdns.org:3000/adicionarcoordenada");
         client.AddParam("latitude", lat);
         client.AddParam("longitude", longt);
         client.AddParam("routeid", route);
@@ -38,17 +36,19 @@ public class InsertRouteCoordinates extends AsyncTask<Void, Void, Boolean> {
         }
         String response = client.getResponse();
         System.out.println(response);
+        if(response.contains("OK")){
+            return true;
+        }else return false;
 
-        return true;
     }
 
     @Override
     protected void onPostExecute(final Boolean success) {
 
         if (success) {
-
+            System.out.println("Nova coordenada adicionada");
         } else {
-
+            System.out.println("Falha na adição da nova rota");
         }
     }
 
