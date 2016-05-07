@@ -4,31 +4,26 @@ import android.os.AsyncTask;
 
 import pt.ulisboa.tecnico.cmov.ubibike.RequestMethod;
 import pt.ulisboa.tecnico.cmov.ubibike.RestClient;
+import pt.ulisboa.tecnico.cmov.ubibike.Stations;
 
 /**
  * Created by andreppires on 05-05-2016.
  */
 public class CreateNewRoute extends AsyncTask<Void, Void, Boolean> {
-    private String email=null;
-    private String lat=null;
-    private String route=null;
-    private String longt=null;
+    private String username=null;
+    private String bikeid=null;
 
 
-    public CreateNewRoute(String username, String latitude, String routeid, String longitude){
-        this.email=username;
-        this.lat=latitude;
-        this.longt=longitude;
-        this.route=routeid;
+    public CreateNewRoute(String username, String bikeid){
+        this.username=username;
+        this.bikeid=bikeid;
     }
 
     @Override
     protected Boolean doInBackground(Void... params) {//TODO
-        RestClient client = new RestClient("http://10.0.2.3:3000/coordenada");
-        client.AddParam("username", email);
-        client.AddParam("latitude", lat);
-        client.AddParam("longitude", longt);
-        client.AddParam("routeid", route);
+        RestClient client = new RestClient("http://andrepirepi.duckdns.org:3000/newroute");
+        client.AddParam("username", username);
+        client.AddParam("bikeid", bikeid);
         try {
             client.Execute(RequestMethod.POST);
         } catch (Exception e) {
@@ -36,16 +31,23 @@ public class CreateNewRoute extends AsyncTask<Void, Void, Boolean> {
         }
         String response = client.getResponse();
         System.out.println(response);
-
-        return true;
+        if(response.contains("Wrong query")){
+            return false;
+        }else{
+            Stations.getStations().setRouteID(Integer.parseInt(response));
+            return true;
+        }
     }
 
     @Override
     protected void onPostExecute(final Boolean success) {
 
         if (success) {
+            System.out.println("Nova rota criada com sucesso!Rota= "+ Stations.getStations().getRouteID());
+
 
         } else {
+            System.out.println("Falha na criação de nova rota. ");
 
         }
     }
