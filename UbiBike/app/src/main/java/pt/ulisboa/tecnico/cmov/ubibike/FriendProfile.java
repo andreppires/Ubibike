@@ -14,7 +14,7 @@ public class FriendProfile extends AppCompatActivity {
     }
 
     public void sendMessage(View view) {
-        Intent intent = new Intent(this, MessageActivity.class);
+        Intent intent = new Intent(this, MsgSenderActivity.class);
         startActivity(intent);
     }
 
