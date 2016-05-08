@@ -2,6 +2,7 @@ package pt.ulisboa.tecnico.cmov.ubibike;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Application;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -48,14 +49,15 @@ public class MsgSenderActivity extends Activity implements
 
     public static final String TAG = "msgsender";
 
+    public static MsgSenderActivity singleton;
+
     private SimWifiP2pManager mManager = null;
     private SimWifiP2pManager.Channel mChannel = null;
     private Messenger mService = null;
+
     private boolean mBound = false;
     private SimWifiP2pSocketServer mSrvSocket = null;
     private SimWifiP2pSocket mCliSocket = null;
-    private TextView mTextInput;
-    private TextView mTextOutput;
     private SimWifiP2pBroadcastReceiver mReceiver;
 
     //Chat stuff
@@ -68,6 +70,7 @@ public class MsgSenderActivity extends Activity implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        singleton = this;
 
         // initialize the UI
         setContentView(R.layout.activity_message);
@@ -110,12 +113,12 @@ public class MsgSenderActivity extends Activity implements
             }
         }
         mCliSocket = null;
-//        if (mBound) {
-//            unbindService(mConnection);
-//            mBound = false;
-//            guiUpdateInitState();
-//        }
-//        unregisterReceiver(mReceiver);
+        if (mBound) {
+            unbindService(mConnection);
+            mBound = false;
+            guiUpdateInitState();
+        }
+        unregisterReceiver(mReceiver);
     }
 
     private void initControls() {
@@ -405,5 +408,24 @@ public class MsgSenderActivity extends Activity implements
         adapter.notifyDataSetChanged();
         scroll();
     }
+
+    // Getters and Setters
+
+    public boolean ismBound() {
+        return mBound;
+    }
+
+    public void setmBound(boolean mBound) {
+        this.mBound = mBound;
+    }
+
+    public ServiceConnection getmConnection() {
+        return mConnection;
+    }
+
+    public void setmConnection(ServiceConnection mConnection) {
+        this.mConnection = mConnection;
+    }
+
 
 }

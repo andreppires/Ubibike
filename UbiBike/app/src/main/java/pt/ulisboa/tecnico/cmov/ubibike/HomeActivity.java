@@ -2,25 +2,35 @@ package pt.ulisboa.tecnico.cmov.ubibike;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
+import android.telephony.gsm.GsmCellLocation;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import java.io.IOException;
-import java.io.ObjectOutputStream;
+
+import pt.inesc.termite.wifidirect.SimWifiP2pBroadcast;
+import pt.inesc.termite.wifidirect.service.SimWifiP2pService;
+import pt.inesc.termite.wifidirect.sockets.SimWifiP2pSocket;
+import pt.inesc.termite.wifidirect.sockets.SimWifiP2pSocketManager;
+import pt.inesc.termite.wifidirect.sockets.SimWifiP2pSocketServer;
+
 
 public class HomeActivity extends AppCompatActivity {
 
-    private Button mButton;
+    private GPSTrackingApp mApp;
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        mApp = (GPSTrackingApp) getApplicationContext();
+
+        //wifiOn();
+
     }
 
     public void myProfileActivity(View view) {
@@ -51,8 +61,20 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void wifiOn() {
+        final GPSTrackingApp app = (GPSTrackingApp) getApplicationContext();
 
-
+        if (!app.ismBound()) {
+            Intent intent = new Intent(this, SimWifiP2pService.class);
+            app.bindService(intent, app.getmConnection(), Context.BIND_AUTO_CREATE);
+            app.setmBound(true);
+            Toast.makeText(this, "Wifi Bounded", Toast.LENGTH_SHORT);
+        }else {
+            if (!app.ismBound())
+                Toast.makeText(this, "Service already bound",
+                        Toast.LENGTH_SHORT).show();
+        }
+    }
 
     class GetStations extends AsyncTask<Void, Void, Boolean> {
 
@@ -105,3 +127,4 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 }
+
