@@ -187,8 +187,6 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
         } else return true;
     }
 
-    private void revervabicla() { //TODO
-    }
 
     public void sendRoute(){//TODO
         lastLocation=null;

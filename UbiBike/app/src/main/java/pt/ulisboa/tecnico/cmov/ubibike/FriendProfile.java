@@ -10,6 +10,7 @@ import android.widget.TextView;
 public class FriendProfile extends AppCompatActivity {
     GetPoints mAuthTask = null;
     TextView friendPoints;
+    String friendUsername;
 
 
     @Override
@@ -23,7 +24,7 @@ public class FriendProfile extends AppCompatActivity {
 
         Bundle b = intent.getExtras();
 
-        String friendUsername = b.getString("STRING_I_NEED");
+        friendUsername = b.getString("STRING_I_NEED");
         System.out.println("friendUsername= "+friendUsername);
         GetPoints vailabuscar = new GetPoints(friendUsername);
         vailabuscar.execute();
@@ -42,14 +43,9 @@ public class FriendProfile extends AppCompatActivity {
 
     public void givePoints(View view) {
         Intent intent = new Intent(this, GivePointsActivity.class);
+        intent.putExtra("STRING_I_NEED", friendUsername);
         startActivity(intent);
     }
-
-    /*public void setPoints(String pontos) {
-
-        friendPoints.setText(pontos);
-    }*/
-
 
 
     class GetPoints extends AsyncTask<Void, Void, Boolean> {
@@ -93,11 +89,7 @@ public class FriendProfile extends AppCompatActivity {
 
             if (success) {
 
-
                 friendPoints.setText(Integer.toString(pontos));
-
-                //friendPoints = (TextView) findViewById(R.id.numOfPointsView);
-
 
             } else {
 

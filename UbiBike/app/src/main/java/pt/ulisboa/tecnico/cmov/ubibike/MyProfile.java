@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import pt.ulisboa.tecnico.cmov.ubibike.AsyncTask.CreateNewRoute;
+
 public class MyProfile extends AppCompatActivity {
     Button mButton;
     GetFriends getfr=null;
@@ -50,7 +52,6 @@ public class MyProfile extends AppCompatActivity {
         );
 
         TextView usernameView = (TextView)findViewById(R.id.username);
-        //System.out.println(Client.getClient().getUsername());
         usernameView.setText(Client.getClient().getUsername());
 
         TextView pointsView = (TextView)findViewById(R.id.numOfPoints);
@@ -117,7 +118,6 @@ public class MyProfile extends AppCompatActivity {
         }
 
 
-
         @Override
         protected Boolean doInBackground(Void... params) {
             RestClient client = new RestClient("http://andrepirespi.duckdns.org:3000/myfriends");
@@ -161,13 +161,7 @@ public class MyProfile extends AppCompatActivity {
                 getfr=null;
 
             } else {
-                /*runOnUiThread(new Runnable()
-                {
-                    public void run() {
-                        Context context = getApplicationContext();
-                        Toast.makeText(context, "Não existem bicicletas disponíveis nesta estação", Toast.LENGTH_SHORT).show();
-                    }
-                });*/
+
             }
         }
 

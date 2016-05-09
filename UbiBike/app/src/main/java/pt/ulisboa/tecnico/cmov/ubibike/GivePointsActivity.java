@@ -1,5 +1,6 @@
 package pt.ulisboa.tecnico.cmov.ubibike;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ public class GivePointsActivity extends AppCompatActivity {
     EditText pointstosend;
     TextView mypoints;
     TextView friendpoints;
+    TextView friend;
 
     int friendsPoints;
     int pointsToSend;
@@ -26,13 +28,19 @@ public class GivePointsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_give_points);
 
         pointstosend = (EditText) findViewById(R.id.pointsToSend);
         friendpoints = (TextView) findViewById(R.id.friendPoints);
         mypoints = (TextView) findViewById(R.id.myPoints);
         Button b = (Button)findViewById(R.id.button);
+        friend = (TextView) findViewById(R.id.friendUsername);
+
+        Intent intent= getIntent();
+        Bundle bundle = intent.getExtras();
+        String friendName = bundle.getString("STRING_I_NEED");
+        friend.setText(friendName);
+
 
         StringBuilder sb = new StringBuilder();
         sb.append("");

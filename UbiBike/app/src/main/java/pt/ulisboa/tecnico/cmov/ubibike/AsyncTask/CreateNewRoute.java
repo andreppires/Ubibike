@@ -21,7 +21,7 @@ public class CreateNewRoute extends AsyncTask<Void, Void, Boolean> {
 
     @Override
     protected Boolean doInBackground(Void... params) {//TODO
-        RestClient client = new RestClient("http://andrepirepi.duckdns.org:3000/newroute");
+        RestClient client = new RestClient("http://andrepirespi.duckdns.org:3000/newroute");
         client.AddParam("username", username);
         client.AddParam("bikeid", bikeid);
         try {
@@ -34,7 +34,8 @@ public class CreateNewRoute extends AsyncTask<Void, Void, Boolean> {
         if(response.contains("Wrong query")){
             return false;
         }else{
-            Stations.getStations().setRouteID(Integer.parseInt(response));
+
+            Stations.getStations().setRouteID(response);
             return true;
         }
     }

@@ -40,6 +40,7 @@
         <activity android:name=".MyProfile" />
         <activity android:name=".ChangePassword" />
         <activity android:name=".StationsActivity" />
+            <activity android:name="NewClient"   />
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" />

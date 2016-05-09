@@ -13,6 +13,9 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
+import pt.ulisboa.tecnico.cmov.ubibike.AsyncTask.CreateNewRoute;
+import pt.ulisboa.tecnico.cmov.ubibike.AsyncTask.InsertRouteCoordinates;
+
 public class HomeActivity extends AppCompatActivity {
 
     private Button mButton;
@@ -21,6 +24,9 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+
+
     }
 
     public void myProfileActivity(View view) {
