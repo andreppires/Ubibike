@@ -194,6 +194,7 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
         String user=Client.getClient().getUsername();
         //InsertRouteCoordinates AssyngPut;
 
+
         //Create new route. Get route id to send locations
         //CreateNewRoute newRoute
         for (Location p :locationsRoute){
