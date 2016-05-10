@@ -34,10 +34,13 @@ public class CreateNewRoute extends AsyncTask<Void, Void, Boolean> {
         if(response.contains("Wrong query")){
             return false;
         }else{
-
             Stations.getStations().setRouteID(response);
             return true;
         }
+    }
+
+    public String getRouteID() {
+        return Stations.getStations().getRouteID();
     }
 
     @Override

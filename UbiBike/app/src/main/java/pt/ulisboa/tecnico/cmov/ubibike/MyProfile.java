@@ -18,14 +18,14 @@ import pt.ulisboa.tecnico.cmov.ubibike.AsyncTask.CreateNewRoute;
 
 public class MyProfile extends AppCompatActivity {
     Button mButton;
-    GetFriends getfr=null;
+
     ArrayList<String> arr_friends = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_profile);
-        getFriendsList();
+
 
         mButton = (Button)findViewById(R.id.deleteAcc);
 
@@ -80,7 +80,6 @@ public class MyProfile extends AppCompatActivity {
             this.mEmail=p;
         }
 
-
         @Override
         protected Boolean doInBackground(Void... params) {
             RestClient client = new RestClient("http://10.0.2.3:3000/userdelete");
@@ -98,76 +97,6 @@ public class MyProfile extends AppCompatActivity {
     public void editProfile(){
             Intent intent = new Intent(this, EditProfile.class);
             startActivity(intent);
-
     }
 
-    public void getFriendsList() {
-
-        getfr= new GetFriends("admin");
-        getfr.execute();
-    }
-
-    /* Ligação ao server
-     */
-
-    class GetFriends extends AsyncTask<Void, Void, Boolean> {
-
-        private String username=null;
-        public GetFriends(String e){
-            this.username=e;
-        }
-
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            RestClient client = new RestClient("http://andrepirespi.duckdns.org:3000/myfriends");
-            client.AddParam("username", username);
-            try {
-                client.Execute(RequestMethod.GET);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            String response = client.getResponse();
-
-            System.out.println(response);
-
-            if (response.contains(",")) {
-
-                String[] aux= response.split(",");
-
-                for (int i=0; i < aux.length ; i++ ) {
-                    String[] st = aux[i].split("\"");
-                    arr_friends.add(i, st[3]);
-
-                }
-                return true;
-            } else if (response.contains("{")) {
-
-                    String[] st = response.split("\"");
-
-                    Client.getClient().addFriends(st[3]);
-
-                return true;
-            } else
-                return false;
-        }
-
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-
-            if (success) {
-                getfr=null;
-
-            } else {
-
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            getfr = null;
-        }
-    }
 }

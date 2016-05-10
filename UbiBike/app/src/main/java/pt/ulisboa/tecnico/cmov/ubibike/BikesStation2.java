@@ -70,6 +70,11 @@ public class BikesStation2 extends AppCompatActivity {
                 }
                 return true;
 
+            } else if (response.contains("{")) {
+                String[] st = response.split("\"");
+                bikes.add(st[3]);
+                return true;
+
             } else
                 return false;
         }
@@ -102,6 +107,7 @@ public class BikesStation2 extends AppCompatActivity {
                 String bikeIP = ((TextView)view).getText().toString();
                 Stations.getStations().setBiclaIP(bikeIP);
                 Intent intent = new Intent(BikesStation2.this, RoutingTime.class);
+                intent.putExtra("STRING_I_NEED", bikeIP);
                 startActivity(intent);
             }
         } );

@@ -211,8 +211,6 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
 
         String lat = Location.convert(loc.getLatitude(), 0);
         String lon = Location.convert(loc.getLongitude(), 0);
-        System.out.println(lat);
-        System.out.println(lon);
 
         String routeid = route.getRouteID();
 

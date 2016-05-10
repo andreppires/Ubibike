@@ -35,8 +35,6 @@ public class StationsActivity extends FragmentActivity implements OnMapReadyCall
                 .findFragmentById(R.id.map);
         mapFragment.getExtendedMapAsync(this);
 
-
-
         final Button buttonReservar = (Button) findViewById(R.id.reservar);
         final Button buttonReservar2 = (Button) findViewById(R.id.reservar2);
         final Button buttonReservar3 = (Button) findViewById(R.id.reservar3);
@@ -84,9 +82,6 @@ public class StationsActivity extends FragmentActivity implements OnMapReadyCall
 
     private void setUpMap() {
 
-        System.out.println("EM SETUPMAP A LISTA É A SEGUINTE");
-        System.out.println(Stations.getStations().getStationsList());
-
         Marker station1marker = mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(38.75322986, -9.20676827))
                 .title("Station 1"));
@@ -103,6 +98,7 @@ public class StationsActivity extends FragmentActivity implements OnMapReadyCall
         station2marker.setVisible(false);
         station3marker.setVisible(false);
 
+
         if(Stations.getStations().getStationsList().contains("Store1"))
             station1marker.setVisible(true);
         if(Stations.getStations().getStationsList().contains("Store2"))
@@ -115,8 +111,6 @@ public class StationsActivity extends FragmentActivity implements OnMapReadyCall
         station1marker.setData(station1MarkerClickListener);
         station2marker.setData(station2MarkerClickListener);
         station3marker.setData(station3MarkerClickListener);
-
-
 
     }
 

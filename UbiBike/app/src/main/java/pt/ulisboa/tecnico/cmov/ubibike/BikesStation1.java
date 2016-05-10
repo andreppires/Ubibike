@@ -2,6 +2,7 @@ package pt.ulisboa.tecnico.cmov.ubibike;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ public class BikesStation1 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bikes_station1);
         getBikesList();
+
 
     }
 
@@ -57,13 +59,12 @@ public class BikesStation1 extends AppCompatActivity {
                 e.printStackTrace();
             }
 
+            System.out.println("A STATIO1 TEM AS SEGUINTES BIKES");
+            System.out.println(client.getResponse());
             String response = client.getResponse();
 
             if (response.contains(",")) {
                 String[] aux= response.split(",");
-
-                System.out.println(response);
-                System.out.println(aux);
 
                 for (int i=0; i < aux.length ; i++ ) {
                     String[] st = aux[i].split("\"");
@@ -71,8 +72,9 @@ public class BikesStation1 extends AppCompatActivity {
                 }
                 return true;
             } else if (response.contains("{")) {
+                String[] st = response.split("\"");
+                bikes.add(st[3]);
                 return true;
-
             }
                 return false;
         }
@@ -109,6 +111,12 @@ public class BikesStation1 extends AppCompatActivity {
                 postPickUp.execute();
 
                 Intent intent = new Intent(BikesStation1.this, RoutingTime.class);
+                intent.putExtra("BIKEIP", bikeIP);
+
+                Stations station = new Stations();
+                Location stationlocal = station.getStation1();
+
+
                 startActivity(intent);
             }
         });
