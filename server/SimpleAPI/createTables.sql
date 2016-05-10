@@ -59,7 +59,8 @@ create table mensagem(
 
 INSERT INTO user (username, password) VALUES
 ('admin', 'adminadmin'),
-('develop', 'test');
+('develop', 'test'),
+('username1','password1');
 
 INSERT INTO store(storeid, latitude, longitude) VALUES
 ('Store1', 38.75322986, -9.20676827),

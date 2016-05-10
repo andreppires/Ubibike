@@ -2,6 +2,7 @@ package pt.ulisboa.tecnico.cmov.ubibike;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -24,6 +25,9 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
 
+import pt.ulisboa.tecnico.cmov.ubibike.AsyncTask.CreateNewRoute;
+import pt.ulisboa.tecnico.cmov.ubibike.AsyncTask.InsertRouteCoordinates;
+
 public class RoutingTime extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
@@ -36,11 +40,18 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
     private double istLong=-9.184699;
     private LatLng IST = new LatLng(istLat, istLong);
     private Location lastLocation=null;
+    CreateNewRoute route;
 
     private boolean running=false;
     private boolean mightStopped=false;
     private boolean mightStarting=false;
     float distance=0;
+
+    Intent intent= getIntent();
+
+    Bundle b = intent.getExtras();
+
+    String bikeid = b.getString("BIKEIP");
 
 
     @Override
@@ -188,23 +199,24 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
     }
 
 
-    public void sendRoute(){//TODO
-        lastLocation=null;
-        String latitude, longitude;
+    public void initiateRoute(){//TODO
+
         String user=Client.getClient().getUsername();
-        //InsertRouteCoordinates AssyngPut;
 
+        route = new CreateNewRoute(user, bikeid);
 
-        //Create new route. Get route id to send locations
-        //CreateNewRoute newRoute
-        for (Location p :locationsRoute){
-            latitude=String.valueOf(p.getLatitude());
-            longitude=String.valueOf(p.getLongitude());
+    }
 
-            //Enviar as coordenadas para o servidor.
-            //AssyngPut= new InsertRouteCoordinates()
+    public void sendRouteCoordinate(Location loc) {
 
-        }
+        String lat = Location.convert(loc.getLatitude(), 0);
+        String lon = Location.convert(loc.getLongitude(), 0);
+        System.out.println(lat);
+        System.out.println(lon);
+
+        String routeid = route.getRouteID();
+
+        InsertRouteCoordinates routeToSend = new InsertRouteCoordinates(lat, routeid , lon );
     }
 
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {

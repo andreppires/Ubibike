@@ -170,7 +170,7 @@ app.post("/updatepass", function(req, res){
         	return res.send({"status": "error", "message": "missing username"});
     	}
 			else {
-				connection.query('SELECT username2 FROM amigos WHERE username1=\''+req.query.username+'\';', function(err, rows, fields) {
+				connection.query('SELECT username2 FROM amigos WHERE username1=\''+req.query.username+'\'OR (select username1 from amigos where username2=\''+req.query.username+'\');', function(err, rows, fields) {
 				  if (err){
 					if (err.code === 'PROTOCOL_SEQUENCE_TIMEOUT') {
 						node.exit();
@@ -183,6 +183,42 @@ app.post("/updatepass", function(req, res){
 
 			});
 		}
+	});
+
+		app.post("/addfriend", function(req, res) {
+			if(!req.body.username1 || !req.body.username2 ) {
+        	return res.send({"status": "error", "message": "missing username"});
+    	}
+			else {
+				connection.query('INSERT INTO amigos (username1, username2) VALUES (\''+req.body.username1+'\' ,\''+req.body.username2+'\');', function(err, rows, fields) {
+				//connection.query('INSERT INTO user (username, password) VALUES(\''+req.body.username+'\' ,\''+req.body.password+'\');', function(err, rows, fields) {
+
+				  if (err){
+					if (err.code === 'PROTOCOL_SEQUENCE_TIMEOUT') {
+						node.exit();
+                    }
+					res.status(203).send("Wrong query");
+				}else {
+					res.status(200).send(rows);
+					console.log(rows);
+				}
+
+			});
+		}
+	});
+
+		app.get("/getUsers", function(req, res) {
+				connection.query('SELECT username FROM user;', function(err, rows, fields) {
+				  if (err){
+					if (err.code === 'PROTOCOL_SEQUENCE_TIMEOUT') {
+						node.exit();
+                    }
+					res.status(203).send("Wrong query");
+				}else {
+					res.status(200).send(rows);
+					console.log(rows);
+				}
+			});
 	});
 
 	app.post("/pickUp", function(req, res){
