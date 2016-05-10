@@ -250,8 +250,8 @@ app.post("/updatepass", function(req, res){
 										}
 										res.status(203).send("Wrong query");
 									}else {
-										res.status(200).send('rows.insertId');
-										console.log(rows);
+										res.status(200).send(""+rows.insertId);
+										console.console.log(rows);
 									}
 				});
 			}

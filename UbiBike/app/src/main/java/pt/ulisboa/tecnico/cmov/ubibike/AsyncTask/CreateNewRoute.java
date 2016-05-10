@@ -52,5 +52,4 @@ public class CreateNewRoute extends AsyncTask<Void, Void, Boolean> {
 
         }
     }
-
 }

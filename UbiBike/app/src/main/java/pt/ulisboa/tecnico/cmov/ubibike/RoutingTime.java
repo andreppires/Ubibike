@@ -40,18 +40,17 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
     private double istLong=-9.184699;
     private LatLng IST = new LatLng(istLat, istLong);
     private Location lastLocation=null;
+
     CreateNewRoute route;
 
     private boolean running=false;
     private boolean mightStopped=false;
     private boolean mightStarting=false;
+    private boolean firstTime=false;
     float distance=0;
+    int count=0;
 
-    Intent intent= getIntent();
-
-    Bundle b = intent.getExtras();
-
-    String bikeid = b.getString("BIKEIP");
+    String bikeid = Stations.getStations().getBiclaIP();
 
 
     @Override
@@ -101,7 +100,6 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
             Log.d("GPS", "Location Changed " + location.toString());
             double latitude= location.getLatitude();
             double longitude= location.getLongitude();
-            System.out.println("latitude= "+ latitude+"\t longitude= "+longitude);
 
 
             setDistance(location);
@@ -117,24 +115,38 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
 
             ////////////////////////////////////////////
             //Check if it is running or not
-            /*
-            if(!Station() && !BTE(Stations.getStations().getBiclaIP())) {
+
+            if(!Station() && !BTE()) {
+                System.out.println("caso Nenhum");
+
                 if (mightStopped) {
                     running = false;
-                    sendRoute();
                 }
-            }else if (Station() && BTE(Stations.getStations().getBiclaIP())){
+            } else if (Station() && BTE()){
+                System.out.println("caso Staton e BTE");
+
                 if (running){
                     mightStopped=true;
-                }else mightStarting=true;
-            }else if(!Station() && BTE(Stations.getStations().getBiclaIP())){
-                if (mightStarting) {
-                    running = true;
-                    startRoute();
+                }else{
+                    firstTime = true;
+                    mightStarting=true;
                 }
-            }*/
+            } else if(!Station() && BTE()){
+                System.out.println("caso BTE");
+                if (mightStarting) {
 
-            //BTE(Stations.getStations().biclaIP);
+                    running = true;
+                }
+            }
+
+            if(running){
+                System.out.println("Vai fazer um runningzinho!");
+                if(firstTime){
+                    initiateRoute();
+                    sendRouteCoordinate(location);
+                }else sendRouteCoordinate(location);
+            }
+
         }
 
         public void setDistance(Location loc){
@@ -164,28 +176,18 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
 
     }
 
-    private void startRoute() {
-        //start saving the locations
-    }
+    private boolean BTE() {
 
-//    private boolean BTE(String biclaIP) {
-//        //verificar se consegue encontrar nos peers o IP da bicla que reservou.
-//        ArrayList<Peers> atual = WifiApp.singleton.getConnectedPeersList();
-//
-//        if(atual != null){
-//            for (Peers p : atual){
-//
-//                if(p.getVirtualIP().equals(biclaIP)){
-//                    System.out.println("Encontrei a bicla!");
-//                    return true;
-//                }
-//            }
-//            return false;
-//        }else {
-//            System.out.println("No Peers!");
-//            return false;
-//        }
-//    }
+        System.out.println("count="+count);
+        count++;
+        if(count>5 && count <11){
+            System.out.println("TEnho uma bicla perto de miiim!");
+            return true;
+        }else{
+            System.out.println("não tenho bicla nenhuma!");
+            return false;
+        }
+    }
 
     private boolean Station() {
         if (locationsRoute.get(locationsRoute.size()-1).getLatitude()==(Stations.getStations().getStation1().getLatitude())
@@ -194,8 +196,9 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
                 && locationsRoute.get(locationsRoute.size()-1).getLongitude()==(Stations.getStations().getStation2().getLongitude())
             || locationsRoute.get(locationsRoute.size()-1).getLatitude()==(Stations.getStations().getStation3().getLatitude())
                 && locationsRoute.get(locationsRoute.size()-1).getLongitude()==(Stations.getStations().getStation3().getLongitude())){
+            System.out.println("estou numa station!");
             return true;
-        } else return true;
+        } else{ return false;}
     }
 
 
@@ -204,6 +207,7 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
         String user=Client.getClient().getUsername();
 
         route = new CreateNewRoute(user, bikeid);
+        route.execute();
 
     }
 
@@ -214,9 +218,10 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
         System.out.println(lat);
         System.out.println(lon);
 
-        String routeid = route.getRouteID();
+        String routeid = Stations.getStations().getRouteID();
 
         InsertRouteCoordinates routeToSend = new InsertRouteCoordinates(lat, routeid , lon );
+        routeToSend.execute();
     }
 
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
