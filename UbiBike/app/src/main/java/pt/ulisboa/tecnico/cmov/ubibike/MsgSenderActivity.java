@@ -136,6 +136,10 @@ public class MsgSenderActivity extends Activity implements
         arr_messages = new ArrayList<ChatMessage>();
         adapter = new ChatAdapter(MsgSenderActivity.this, new ArrayList<ChatMessage>());
         myList.setAdapter(adapter);
+
+        ChatMessage cm = new ChatMessage();
+        cm.setMessage("Para enviar pontos, envie PONTOS-x onde x sao os pontos a enviar");
+        displayMessage(cm);
     }
 
     private View.OnClickListener listenerInRangeButton = new View.OnClickListener() {
@@ -243,10 +247,20 @@ public class MsgSenderActivity extends Activity implements
                             String st = sockIn.readLine();
                             if(st != null) {
                                 publishProgress(st);
+                                if(st.startsWith("PONTOS")){
+
+                                    String[] st2 = st.split("-");
+                                    int pointsReceive = Integer.parseInt(st2[1]);
+                                    int myPoints = Client.getClient().getPontos();
+                                    myPoints = myPoints + pointsReceive;
+
+                                    Log.d("RECEVICEPOINTS", "Tens estes pontos agora " + myPoints);
+
+                                    Client.getClient().setPontos(myPoints);
+                                }
 
                                 sock.getOutputStream().write(("\n").getBytes());
                             }
-
                         }
 
                     } catch (IOException e) {

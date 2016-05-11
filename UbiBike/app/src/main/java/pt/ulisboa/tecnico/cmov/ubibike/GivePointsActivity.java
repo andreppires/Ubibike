@@ -5,16 +5,22 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
+
+import pt.inesc.termite.wifidirect.sockets.SimWifiP2pSocket;
+
 
 public class GivePointsActivity extends AppCompatActivity {
 
     SetPoints connectServer = null;
+
 
     EditText pointstosend;
     TextView mypoints;
@@ -57,18 +63,20 @@ public class GivePointsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                /*friendsPoints = Integer.parseInt(friendpoints.getText().toString());
+                myPoints = Client.getClient().getPontos();
                 pointsToSend = Integer.parseInt(pointstosend.getText().toString());
-                myPoints = Integer.parseInt(mypoints.getText().toString());*/
 
-                if((myPoints - pointsToSend) > 0) {
+//                friendsPoints = Integer.parseInt(friendpoints.getText().toString());
+//                pointsToSend = Integer.parseInt(pointstosend.getText().toString());
+//                myPoints = Integer.parseInt(mypoints.getText().toString());
+
+                if(myPoints > pointsToSend) {
                     connectServer = new SetPoints(Client.getClient().getUsername(), (myPoints-pointsToSend));
                     connectServer.execute();
-
-
                 } else {
                     Toast.makeText(v.getContext(), "Não existem pontos para enviar", Toast.LENGTH_SHORT).show();
                 }
+                Log.d("GIVEPOINTS","Pontos do utilizador :" + Client.getClient().getPontos());
             }
         });
     }
@@ -84,7 +92,7 @@ public class GivePointsActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Void... params) { //todo apenas actualiza os pontos do atual utilizador. Pontos do amigo também têm de ser atualizados.
-            RestClient client = new RestClient("http://10.0.2.3:3000/setpoints");
+            RestClient client = new RestClient("http://andrepirespi.duckdns.org:3000/setpoints");
             client.AddParam("username", mmEmail);
             client.AddParam("points", Integer.toString(mPontos) );
             try {
@@ -92,6 +100,7 @@ public class GivePointsActivity extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
             String response = client.getResponse();
 
             if(!response.contains("OK")){
@@ -109,6 +118,8 @@ public class GivePointsActivity extends AppCompatActivity {
             if (success) {
                 friendpoints.setText(Integer.toString(friendsPoints + pointsToSend));
                 mypoints.setText(Integer.toString(myPoints - pointsToSend));
+
+
             } else {
                 pointstosend.setError(getString(R.string.error_server));
             }
