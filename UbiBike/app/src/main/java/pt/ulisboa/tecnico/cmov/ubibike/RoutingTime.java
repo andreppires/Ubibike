@@ -27,6 +27,7 @@ import java.util.ArrayList;
 
 import pt.ulisboa.tecnico.cmov.ubibike.AsyncTask.CreateNewRoute;
 import pt.ulisboa.tecnico.cmov.ubibike.AsyncTask.InsertRouteCoordinates;
+import pt.ulisboa.tecnico.cmov.ubibike.AsyncTask.LeaveBike;
 import pt.ulisboa.tecnico.cmov.ubibike.AsyncTask.SetPoints;
 
 public class RoutingTime extends FragmentActivity implements OnMapReadyCallback {
@@ -207,9 +208,9 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
         SetPoints enviaPontos = new SetPoints(Client.getClient().getUsername(),newPoint);
         enviaPontos.execute();
 
-
-
-
+        //Muda o estado da bicicleta para que volte a ficar disponivel.
+        LeaveBike leave = new LeaveBike(Stations.getStations().getBiclaIP());
+        leave.execute();
     }
 
     private boolean BTE() {

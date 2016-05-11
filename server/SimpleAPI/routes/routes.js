@@ -237,6 +237,24 @@ app.post("/updatepass", function(req, res){
 			}
 	});
 
+	app.post("/leaveBike", function(req, res){
+			if(!req.body.bikeid) {
+					return res.send({"status": "error", "message": "missing bikeid"});
+			}else {
+				connection.query('UPDATE bicicleta SET status = 0 where bikeid = \''+req.body.bikeid+'\';', function(err, rows, fields) {
+									if (err){
+										if (err.code === 'PROTOCOL_SEQUENCE_TIMEOUT') {
+											node.exit();
+										}
+										res.status(203).send("Wrong query");
+									}else {
+										res.status(200).send('OK');
+										console.log(rows);
+									}
+				});
+			}
+	});
+
 	app.post("/newroute", function(req, res){
 			if(!req.body.bikeid || !req.body.username) {
 					return res.send({"status": "error", "message": "missing bikeid"});
