@@ -1,5 +1,6 @@
 package pt.ulisboa.tecnico.cmov.ubibike;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
@@ -7,6 +8,7 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 
 import com.androidmapsextensions.*;
@@ -24,45 +26,57 @@ public class StationsActivity extends FragmentActivity implements OnMapReadyCall
     private double istLong=-9.184699;
     private LatLng IST = new LatLng(istLat, istLong);
 
+    public int update;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_stations);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getExtendedMapAsync(this);
 
-        final Button buttonReservar = (Button) findViewById(R.id.reservar);
-        final Button buttonReservar2 = (Button) findViewById(R.id.reservar2);
-        final Button buttonReservar3 = (Button) findViewById(R.id.reservar3);
+        final Context context = getApplicationContext();
 
-        buttonReservar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(StationsActivity.this, BikesStation1.class);
-                startActivity(intent);
-            }
-        });
+        if (!(Stations.getStations().getStationsList() == null)) {
+            setContentView(R.layout.activity_stations);
+            // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.map);
 
-        buttonReservar2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(StationsActivity.this, BikesStation2.class);
-                startActivity(intent);
-            }
-        });
+            mapFragment.getExtendedMapAsync(this);
 
-        buttonReservar3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(StationsActivity.this, BikesStation3.class);
-                startActivity(intent);
-            }
-        });
+            final Button buttonReservar = (Button) findViewById(R.id.reservar);
+            final Button buttonReservar2 = (Button) findViewById(R.id.reservar2);
+            final Button buttonReservar3 = (Button) findViewById(R.id.reservar3);
+
+            buttonReservar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(StationsActivity.this, BikesStation1.class);
+                    startActivity(intent);
+                }
+            });
+
+            buttonReservar2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(StationsActivity.this, BikesStation2.class);
+                    startActivity(intent);
+                }
+            });
+
+            buttonReservar3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(StationsActivity.this, BikesStation3.class);
+                    startActivity(intent);
+                }
+            });
+
+        } else
+            Toast.makeText(context, "Cannot load stations. Please try again", Toast.LENGTH_SHORT).show();
     }
+
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {

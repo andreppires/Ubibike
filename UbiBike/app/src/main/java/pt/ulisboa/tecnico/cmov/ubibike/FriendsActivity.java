@@ -60,6 +60,16 @@ public class FriendsActivity extends Activity {
         } );
         addFriend();
     }
+    @Override
+    public void onResume() {
+        super .onResume();
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arr_friends);
+
+        myList.setAdapter(adapter);
+
+
+    }
 
     /*Adicionar um novo amigo */
     public void addFriend() {

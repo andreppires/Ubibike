@@ -23,6 +23,8 @@ public class HomeActivity extends AppCompatActivity {
 
     private GPSTrackingApp mApp;
 
+    public int update = 0;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
@@ -95,7 +97,6 @@ public class HomeActivity extends AppCompatActivity {
             }
 
             String response = client.getResponse();
-            System.out.println(response);
 
             if (response.contains(","))
             {
@@ -103,10 +104,9 @@ public class HomeActivity extends AppCompatActivity {
 
                 for (int i=0; i < aux.length ; i++ ) {
                     String[] st = aux[i].split("\"");
-                    Stations.getStations().addStationsList( st[3]);
+                    Stations.getStations().addStationsList(st[3]);
                 }
 
-                System.out.println(Stations.getStations().getStationsList());
                 return true;
             } else
                 return false;
@@ -116,6 +116,7 @@ public class HomeActivity extends AppCompatActivity {
         protected void onPostExecute(final Boolean success) {
 
             if (success) {
+
             } else {
             }
         }
