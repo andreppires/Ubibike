@@ -26,6 +26,8 @@ public class HomeActivity extends AppCompatActivity {
     public int update = 0;
 
     protected void onCreate(Bundle savedInstanceState) {
+        GetStations getsts = new GetStations();
+        getsts.execute();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
@@ -51,8 +53,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void stationActivity(View view) {
-        GetStations getsts = new GetStations("stations");
-        getsts.execute();
+        System.out.println("size= "+ Stations.getStations().getStationsList().size());
         Intent intent = new Intent(this, StationsActivity.class);
         startActivity(intent);
     }
@@ -73,11 +74,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     class GetStations extends AsyncTask<Void, Void, Boolean> {
-
-        private String stations=null;
-        public GetStations(String e){
-            this.stations=e;
-        }
+        String response;
 
 
         @Override
@@ -90,16 +87,11 @@ public class HomeActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            String response = client.getResponse();
+            response = client.getResponse();
 
-            if (response.contains(","))
+            if (response.contains("\""))
             {
-                String[] aux= response.split(",");
 
-                for (int i=0; i < aux.length ; i++ ) {
-                    String[] st = aux[i].split("\"");
-                    Stations.getStations().addStationsList(st[3]);
-                }
 
                 return true;
             } else
@@ -110,8 +102,17 @@ public class HomeActivity extends AppCompatActivity {
         protected void onPostExecute(final Boolean success) {
 
             if (success) {
+                String[] aux= response.split(",");
+
+                for (int i=0; i < aux.length ; i++ ) {
+                    String[] st = aux[i].split("\"");
+                    Stations.getStations().addStationsList(st[3]);
+                }
+                System.out.println("consegui obter as estações ");
 
             } else {
+                System.out.println("NAO consegui obter as estações ");
+
             }
         }
 

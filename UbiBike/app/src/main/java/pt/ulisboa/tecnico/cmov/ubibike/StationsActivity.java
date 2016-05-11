@@ -72,8 +72,11 @@ public class StationsActivity extends FragmentActivity implements OnMapReadyCall
                 }
             });
 
-        } else
+        } else{
             Toast.makeText(context, "Cannot load stations. Please try again", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+
     }
 
 
