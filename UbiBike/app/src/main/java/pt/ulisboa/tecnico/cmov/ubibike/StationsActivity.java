@@ -36,7 +36,7 @@ public class StationsActivity extends FragmentActivity implements OnMapReadyCall
 
         final Context context = getApplicationContext();
 
-        if (!(Stations.getStations().getStationsList() == null)) {
+        if (!(Stations.getStations().getStationsList().size() == 0)) {
             setContentView(R.layout.activity_stations);
             // Obtain the SupportMapFragment and get notified when the map is ready to be used.
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
