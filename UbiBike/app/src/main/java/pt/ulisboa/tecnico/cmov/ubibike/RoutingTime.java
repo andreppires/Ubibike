@@ -27,6 +27,7 @@ import java.util.ArrayList;
 
 import pt.ulisboa.tecnico.cmov.ubibike.AsyncTask.CreateNewRoute;
 import pt.ulisboa.tecnico.cmov.ubibike.AsyncTask.InsertRouteCoordinates;
+import pt.ulisboa.tecnico.cmov.ubibike.AsyncTask.SetPoints;
 
 public class RoutingTime extends FragmentActivity implements OnMapReadyCallback {
 
@@ -36,10 +37,10 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
     public LocationUpdateListener listener;
 
     private ArrayList<Location> locationsRoute= new ArrayList<Location>();
+    private ArrayList<Location> realRoute= new ArrayList<Location>();
     private double istLat=38.752694;
     private double istLong=-9.184699;
     private LatLng IST = new LatLng(istLat, istLong);
-    private Location lastLocation=null;
 
     CreateNewRoute route;
 
@@ -49,6 +50,8 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
     private boolean firstTime=false;
     float distance=0;
     int count=0;
+    int first=0;
+    boolean endCareDone = true;
 
     String bikeid = Stations.getStations().getBiclaIP();
 
@@ -100,18 +103,12 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
             Log.d("GPS", "Location Changed " + location.toString());
             double latitude= location.getLatitude();
             double longitude= location.getLongitude();
+            System.out.println("lat= "+latitude);
+            System.out.println("lon= "+longitude);
 
 
             setDistance(location);
             locationsRoute.add(location);
-
-            // Instantiates a new Polyline object and adds points to define a rectangle
-            PolylineOptions rectOptions = new PolylineOptions();
-            for (Location p:locationsRoute) {
-                rectOptions.add(new LatLng(p.getLatitude(), p.getLongitude()));
-            }
-            // Get back the mutable Polyline
-            Polyline polyline = mMap.addPolyline(rectOptions);
 
             ////////////////////////////////////////////
             //Check if it is running or not
@@ -121,6 +118,12 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
 
                 if (mightStopped) {
                     running = false;
+                    mightStarting=false;
+                    System.out.println("fim da rota!");
+                    if(endCareDone){
+                        endCareDone=false;
+                        endCare();
+                    }
                 }
             } else if (Station() && BTE()){
                 System.out.println("caso Staton e BTE");
@@ -142,16 +145,35 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
             if(running){
                 System.out.println("Vai fazer um runningzinho!");
                 if(firstTime){
+                    firstTime=false;
                     initiateRoute();
-                    sendRouteCoordinate(location);
+                    sendRouteCoordinate(locationsRoute.get(locationsRoute.size()-2));
+                    realRoute.add(locationsRoute.get(locationsRoute.size()-2));
+
+
                 }else sendRouteCoordinate(location);
+
+                setDistance(location);
+                realRoute.add(location);
+
+
+                // Instantiates a new Polyline object and adds points to define a rectangle
+                PolylineOptions rectOptions = new PolylineOptions();
+                for (Location p:realRoute) {
+                    rectOptions.add(new LatLng(p.getLatitude(), p.getLongitude()));
+                }
+                // Get back the mutable Polyline
+                Polyline polyline = mMap.addPolyline(rectOptions);
             }
+
+            System.out.println("RUNNING= "+running+"\n"+"mightSTART = "+mightStarting+"\nmightSTOP= "+mightStopped);
+            System.out.println("-------------------------------------------------------------------");
 
         }
 
         public void setDistance(Location loc){
-            if(locationsRoute.size()!=0){
-                distance += locationsRoute.get(locationsRoute.size()-1).distanceTo(loc);
+            if(realRoute.size()!=0){
+                distance += realRoute.get(realRoute.size()-1).distanceTo(loc); //distancia em metros
             }
 
         }
@@ -176,17 +198,48 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
 
     }
 
-    private boolean BTE() {
+    private void endCare() {
+        //Actualizar os pontos do utilizador.
+        int aux = ((int) distance)/100; //parte inteira da distancia percorrida.
+        int newPoint= Client.getClient().getPontos()+ aux; //1 ponto por cada 100 metros.
+        System.out.println("pontos obtidos: "+aux);
+        Client.getClient().setPontos(newPoint);
+        SetPoints enviaPontos = new SetPoints(Client.getClient().getUsername(),newPoint);
+        enviaPontos.execute();
 
-        System.out.println("count="+count);
-        count++;
-        if(count>5 && count <11){
+
+
+
+    }
+
+    private boolean BTE() {
+        /*
+        if(count>5/* && count <9){
             System.out.println("TEnho uma bicla perto de miiim!");
             return true;
         }else{
             System.out.println("não tenho bicla nenhuma!");
             return false;
+        }*/
+
+        if(Station()){
+            if(first==0){
+                first++;
+                return false;
+            }
+            if(first==1){
+                first++;
+                return true;
+            }
+            if(first==2){
+                first++;
+                return true;
+            }
         }
+        if(first==2) {
+            return true;
+        }
+        else return false;
     }
 
     private boolean Station() {
@@ -202,12 +255,13 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
     }
 
 
-    public void initiateRoute(){//TODO
+    public void initiateRoute(){
 
         String user=Client.getClient().getUsername();
 
         route = new CreateNewRoute(user, bikeid);
         route.execute();
+        sendRouteCoordinate(locationsRoute.get(locationsRoute.size()-1)); //Adicionar à rota a coordenada inicial onde se colocou o mightStart=true
 
     }
 
@@ -215,8 +269,8 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
 
         String lat = Location.convert(loc.getLatitude(), 0);
         String lon = Location.convert(loc.getLongitude(), 0);
-
         String routeid = Stations.getStations().getRouteID();
+
 
         InsertRouteCoordinates routeToSend = new InsertRouteCoordinates(lat, routeid , lon );
         routeToSend.execute();

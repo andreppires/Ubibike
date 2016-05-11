@@ -13,9 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-
-import pt.ulisboa.tecnico.cmov.ubibike.AsyncTask.CreateNewRoute;
-
 public class MyProfile extends AppCompatActivity {
     Button mButton;
 

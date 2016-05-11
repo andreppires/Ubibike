@@ -55,12 +55,6 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
-    public void startRouteActivity(View view) {
-        Intent intent = new Intent(this, RoutingTime.class);
-        startActivity(intent);
-    }
-
     public void wifiOn() {
         final GPSTrackingApp app = (GPSTrackingApp) getApplicationContext();
 

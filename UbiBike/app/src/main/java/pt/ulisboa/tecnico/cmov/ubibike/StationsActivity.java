@@ -91,7 +91,7 @@ public class StationsActivity extends FragmentActivity implements OnMapReadyCall
                 .title("Station 2"));
 
         Marker station3marker = mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(38.7601071, -9.18283225))
+                .position(new LatLng(38.760197, -9.18499773))
                 .title("Station 3"));
 
         station1marker.setVisible(false);

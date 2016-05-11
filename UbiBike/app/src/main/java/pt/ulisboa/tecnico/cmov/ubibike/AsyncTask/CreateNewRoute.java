@@ -20,7 +20,7 @@ public class CreateNewRoute extends AsyncTask<Void, Void, Boolean> {
     }
 
     @Override
-    protected Boolean doInBackground(Void... params) {//TODO
+    protected Boolean doInBackground(Void... params) {
         RestClient client = new RestClient("http://andrepirespi.duckdns.org:3000/newroute");
         client.AddParam("username", username);
         client.AddParam("bikeid", bikeid);
@@ -30,7 +30,6 @@ public class CreateNewRoute extends AsyncTask<Void, Void, Boolean> {
             e.printStackTrace();
         }
         String response = client.getResponse();
-        System.out.println(response);
         if(response.contains("Wrong query")){
             return false;
         }else{
@@ -39,15 +38,11 @@ public class CreateNewRoute extends AsyncTask<Void, Void, Boolean> {
         }
     }
 
-    public String getRouteID() {
-        return Stations.getStations().getRouteID();
-    }
-
     @Override
     protected void onPostExecute(final Boolean success) {
 
         if (success) {
-            System.out.println("Nova rota criada com sucesso!Rota= "+ Stations.getStations().getRouteID());
+            System.out.println("Nova rota criada com sucesso!\nRota= "+ Stations.getStations().getRouteID());
 
 
         } else {

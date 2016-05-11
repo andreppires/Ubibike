@@ -24,8 +24,8 @@ public final class Stations {
         station2.setLongitude(-9.191128333333333);
 
         station3=new Location("Station3");
-        station3.setLatitude(38.760106666666665);
-        station3.setLongitude(-9.182831666666667);
+        station3.setLatitude(38.760196666666666);
+        station3.setLongitude(-9.184996666666667);
 
         setBiclaIP("0.0.0.0:1");
 

@@ -24,7 +24,7 @@ public class InsertRouteCoordinates extends AsyncTask<Void, Void, Boolean> {
     }
 
     @Override
-    protected Boolean doInBackground(Void... params) {//TODO
+    protected Boolean doInBackground(Void... params) {
         RestClient client = new RestClient("http://andrepirespi.duckdns.org:3000/adicionarcoordenada");
         client.AddParam("latitude", lat);
         client.AddParam("longitude", longt);
@@ -35,7 +35,6 @@ public class InsertRouteCoordinates extends AsyncTask<Void, Void, Boolean> {
             e.printStackTrace();
         }
         String response = client.getResponse();
-        System.out.println(response);
         if(response.contains("OK")){
             return true;
         }else return false;
