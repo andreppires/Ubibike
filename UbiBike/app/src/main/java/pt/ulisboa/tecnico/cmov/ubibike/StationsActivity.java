@@ -55,7 +55,8 @@ public class StationsActivity extends FragmentActivity implements OnMapReadyCall
             buttonReservar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(StationsActivity.this, BikesStation1.class);
+                    Intent intent = new Intent(StationsActivity.this, BikesStation.class);
+                    intent.putExtra(BikesStation.KEY_EXTRA, "Store1");
                     startActivity(intent);
                 }
             });
@@ -63,7 +64,8 @@ public class StationsActivity extends FragmentActivity implements OnMapReadyCall
             buttonReservar2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(StationsActivity.this, BikesStation2.class);
+                    Intent intent = new Intent(StationsActivity.this, BikesStation.class);
+                    intent.putExtra(BikesStation.KEY_EXTRA, "Store2");
                     startActivity(intent);
                 }
             });
@@ -71,7 +73,8 @@ public class StationsActivity extends FragmentActivity implements OnMapReadyCall
             buttonReservar3.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(StationsActivity.this, BikesStation3.class);
+                    Intent intent = new Intent(StationsActivity.this, BikesStation.class);
+                    intent.putExtra(BikesStation.KEY_EXTRA, "Store3");
                     startActivity(intent);
                 }
             });
