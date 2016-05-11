@@ -7,6 +7,7 @@ import android.provider.Settings;
 import android.widget.Toast;
 
 import pt.inesc.termite.wifidirect.SimWifiP2pBroadcast;
+import pt.inesc.termite.wifidirect.SimWifiP2pDeviceList;
 import pt.inesc.termite.wifidirect.SimWifiP2pInfo;
 
 /**
@@ -66,6 +67,9 @@ public class SimWifiP2pBroadcastReceiver extends BroadcastReceiver {
                 Toast.makeText(mActivity, "Peer list changed",
                         Toast.LENGTH_SHORT).show();
             }else{
+                SimWifiP2pDeviceList deviceList = (SimWifiP2pDeviceList) intent.getSerializableExtra(SimWifiP2pBroadcast.EXTRA_DEVICE_LIST);
+                tApp.setPeers(deviceList);
+
                 Toast.makeText(tApp, "Peer list changed",
                         Toast.LENGTH_SHORT).show();
             }

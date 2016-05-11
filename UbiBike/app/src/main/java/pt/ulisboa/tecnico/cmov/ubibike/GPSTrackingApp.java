@@ -1,6 +1,5 @@
 package pt.ulisboa.tecnico.cmov.ubibike;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Application;
 import android.content.ComponentName;
@@ -11,9 +10,6 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.os.Messenger;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 import pt.inesc.termite.wifidirect.SimWifiP2pBroadcast;
 import pt.inesc.termite.wifidirect.SimWifiP2pDevice;
@@ -36,6 +32,7 @@ public class GPSTrackingApp extends Application implements
         private SimWifiP2pSocketServer mSrvSocket = null;
         private SimWifiP2pSocket mCliSocket = null;
         private SimWifiP2pBroadcastReceiver mReceiver;
+        private SimWifiP2pDeviceList peers = null;
 
         public GPSTrackingApp getInstance(){
                 return singleton;
@@ -88,6 +85,28 @@ public class GPSTrackingApp extends Application implements
                 Intent intent = new Intent(getApplicationContext(), SimWifiP2pService.class);
                 bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
                 mBound = true;
+
+        }
+
+        public boolean isInRange(String virtualIP){
+
+                String deviceName = null;
+
+                SimWifiP2pDevice device = null;
+
+                for(SimWifiP2pDevice d:peers.getDeviceList()){
+                       if(d.getVirtIp().equals(virtualIP)){
+                               deviceName = d.deviceName;
+                       }
+                }
+
+                device = peers.getByName(deviceName);
+
+                if(device == null){
+                        return false;
+                }else{
+                        return true;
+                }
         }
 
 
@@ -118,12 +137,21 @@ public class GPSTrackingApp extends Application implements
                 this.wifiEnabled = wifiEnabled;
         }
 
+        public SimWifiP2pDeviceList getPeers() {
+                return peers;
+        }
+
+        public void setPeers(SimWifiP2pDeviceList peers) {
+                this.peers = peers;
+        }
+
         /*
 	 * Listeners associated to Termite
 	 */
 
         @Override
         public void onPeersAvailable(SimWifiP2pDeviceList peers) {
+
                 StringBuilder peersStr = new StringBuilder();
 
                 // compile list of devices in range
