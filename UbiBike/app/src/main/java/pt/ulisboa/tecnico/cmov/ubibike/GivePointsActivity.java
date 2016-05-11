@@ -57,9 +57,9 @@ public class GivePointsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                friendsPoints = Integer.parseInt(friendpoints.getText().toString());
+                /*friendsPoints = Integer.parseInt(friendpoints.getText().toString());
                 pointsToSend = Integer.parseInt(pointstosend.getText().toString());
-                myPoints = Integer.parseInt(mypoints.getText().toString());
+                myPoints = Integer.parseInt(mypoints.getText().toString());*/
 
                 if((myPoints - pointsToSend) > 0) {
                     connectServer = new SetPoints(Client.getClient().getUsername(), (myPoints-pointsToSend));

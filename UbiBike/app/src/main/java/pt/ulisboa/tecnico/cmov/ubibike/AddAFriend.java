@@ -27,38 +27,54 @@ public class AddAFriend extends AppCompatActivity {
     String chosenFriend;
 
     PostNewFriend postfr;
+
+    ListView myList;
+
+    ArrayList<String> arg;
+
+    ArrayAdapter<String> adapter;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_add_afriend);
 
+        myList = (ListView) findViewById(R.id.allUsersListView);
         getUsersList();
 
-        }
-
+    }
 
 
     public ArrayList<String> cleanList(ArrayList<String> listToClean) {
-
-        listToClean.remove(me);
-
-        for (int i = 0; i < listToClean.size(); i++) {
-
-            if (arr_friends.contains(listToClean.get(i))) {
-
-                String toRemove = listToClean.get(i);
-                listToClean.remove(toRemove);
+        ArrayList<String> aux = new ArrayList<String>(listToClean);
+        aux.remove(me);
+        /*for (int i = 0; i < aux.size(); i++) {
+            if (arr_friends.contains(aux.get(i))) {
+                String toRemove = aux.get(i);
+                aux.remove(toRemove);
+            }
+        }*/
+        for (String p: arr_friends){
+            for(String i: aux){
+                if(p.contains(i)){
+                    aux.remove(i);
+                }
             }
 
         }
-        return listToClean;
+        return aux;
     }
 
-    public void createListView(){
+    public void createListView(final ArrayList<String> arg){
 
-        final ListView myList= (ListView) findViewById(R.id.allUsersListView);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arr_users);
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arg);
+
+        adapter.notifyDataSetChanged();
 
         myList.setAdapter(adapter);
 
@@ -66,20 +82,20 @@ public class AddAFriend extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                 chosenFriend = myList.getAdapter().getItem(position).toString();
-
                 PostNewFriend(me, chosenFriend);
-
+                arr_friends.add(chosenFriend);
+                arg.remove(chosenFriend);
+                ArrayAdapter adapter2 = new ArrayAdapter<String>(AddAFriend.this, android.R.layout.simple_list_item_1, arg);
+                myList.setAdapter(adapter2);
             }
         });
-
     }
 
 
     public void getUsersList() {
 
-        getUs= new GetUsersList("admin");
+        getUs= new GetUsersList(me);
         getUs.execute();
     }
 
@@ -105,25 +121,17 @@ public class AddAFriend extends AppCompatActivity {
             }
 
             String response = client.getResponse();
-
-
             if (response.contains(",")) {
-
                 String[] aux= response.split(",");
-
                 for (int i=0; i < aux.length ; i++ ) {
                     String[] st = aux[i].split("\"");
                     arr_users.add(i, st[3]);
-
                 }
 
                 return true;
             } else if (response.contains("{")) {
-
                 String[] st = response.split("\"");
-
                 arr_users.add(st[3]);
-
                 return true;
             } else
                 return false;
@@ -132,14 +140,12 @@ public class AddAFriend extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(final Boolean success) {
-
             if (success) {
                 getUs=null;
-                cleanList(arr_users);
-                createListView();
-
+                arg = cleanList(arr_users);
+                createListView(arg);
             } else {
-
+                System.out.println("fódeu!");
             }
         }
 
@@ -150,13 +156,11 @@ public class AddAFriend extends AppCompatActivity {
     }
 
     public void PostNewFriend(String me, String friend) {
-
         postfr= new PostNewFriend(me, friend);
         postfr.execute();
     }
 
     class PostNewFriend extends AsyncTask<Void, Void, Boolean> {
-
         private String me=null;
         String friend=null;
 
@@ -178,11 +182,8 @@ public class AddAFriend extends AppCompatActivity {
 
             String response = client.getResponse();
             if(response.contains("OK")){
-
                 return true;
-
             } else return false;
-
         }
 
         @Override
@@ -190,8 +191,6 @@ public class AddAFriend extends AppCompatActivity {
             postfr = null;
 
             if (success) {
-                arr_friends.add(chosenFriend);
-
                 Toast toast = Toast.makeText(getApplicationContext(), friend + " é agora seu amigo", Toast.LENGTH_SHORT);
                 toast.show();
             } else {
@@ -204,6 +203,4 @@ public class AddAFriend extends AppCompatActivity {
             postfr = null;
         }
     }
-
-
 }

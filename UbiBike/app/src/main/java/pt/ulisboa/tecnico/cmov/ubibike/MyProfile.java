@@ -15,7 +15,6 @@ import android.widget.Toast;
 import java.util.ArrayList;
 public class MyProfile extends AppCompatActivity {
     Button mButton;
-
     ArrayList<String> arr_friends = new ArrayList<String>();
 
     @Override
@@ -25,20 +24,16 @@ public class MyProfile extends AppCompatActivity {
 
 
         mButton = (Button)findViewById(R.id.deleteAcc);
-
         mButton.setOnClickListener(
                 new View.OnClickListener() {
                     public void onClick(View view) {
-
                         DeleteAyncAccount deletaAi = new DeleteAyncAccount(Client.getClient().getUsername());
                         deletaAi.execute();
                         login();
-
                     }
                 });
 
         mButton = (Button)findViewById(R.id.editProfile);
-
         mButton.setOnClickListener(
                 new View.OnClickListener() {
                     public void onClick(View view) {
