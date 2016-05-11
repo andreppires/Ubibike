@@ -191,13 +191,15 @@ app.post("/updatepass", function(req, res){
     	}
 			else {
 				connection.query('INSERT INTO amigos (username1, username2) VALUES (\''+req.body.username1+'\' ,\''+req.body.username2+'\');', function(err, rows, fields) {
+				//connection.query('INSERT INTO user (username, password) VALUES(\''+req.body.username+'\' ,\''+req.body.password+'\');', function(err, rows, fields) {
+
 				  if (err){
 					if (err.code === 'PROTOCOL_SEQUENCE_TIMEOUT') {
 						node.exit();
                     }
 					res.status(203).send("Wrong query");
 				}else {
-					res.status(200).send(rows);
+					res.status(200).send("OK");
 					console.log(rows);
 				}
 
@@ -266,8 +268,8 @@ app.post("/updatepass", function(req, res){
 										}
 										res.status(203).send("Wrong query");
 									}else {
-										res.status(200).send(""+rows.insertId);
-										console.console.log(rows);
+										res.status(200).send('rows.insertId');
+										console.log(rows);
 									}
 				});
 			}
@@ -275,9 +277,9 @@ app.post("/updatepass", function(req, res){
 
 	app.post("/adicionarcoordenada", function(req, res){
 			if(!req.body.longitude || !req.body.latitude || !req.body.routeid) {
-					return res.send({"status": "error", "message": "missing parameters"});
+					return res.send({"status": "error", "message": "missing bikeid"});
 			}else {
-				connection.query('INSERT INTO coordenadas (rota, latitude, longitude) VALUES(\''+req.body.routeid+'\' ,\''+req.body.latitude+'\' ,\''+req.body.longitude+'\');', function(err, rows, fields) {
+				connection.query('INSERT INTO coordenadas (rota, latitude, longitude) VALUES(\''+req.body.routeid+'\' ,\''+req.body.latitude+'\',\''+req.body.longitude+'\');', function(err, rows, fields) {
 									if (err){
 										if (err.code === 'PROTOCOL_SEQUENCE_TIMEOUT') {
 											node.exit();
