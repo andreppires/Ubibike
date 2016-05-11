@@ -55,12 +55,16 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
     boolean endCareDone = true;
 
     String bikeid = Stations.getStations().getBiclaIP();
+    public static final String BIKEIP = "com.example.yourapp.KEY_BOOK";
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_routing_time);
+
+        bikeid  = getIntent().getStringExtra(BIKEIP);
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         listener = new LocationUpdateListener();
@@ -114,7 +118,7 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
             ////////////////////////////////////////////
             //Check if it is running or not
 
-            if(!Station() && !BTE()) {
+            if(!Station() && !BTE(bikeid)) {
                 System.out.println("caso Nenhum");
 
                 if (mightStopped) {
@@ -126,7 +130,7 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
                         endCare();
                     }
                 }
-            } else if (Station() && BTE()){
+            } else if (Station() && BTE(bikeid)){
                 System.out.println("caso Staton e BTE");
 
                 if (running){
@@ -135,7 +139,7 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
                     firstTime = true;
                     mightStarting=true;
                 }
-            } else if(!Station() && BTE()){
+            } else if(!Station() && BTE(bikeid)){
                 System.out.println("caso BTE");
                 if (mightStarting) {
 
@@ -216,7 +220,7 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
         leave.execute();
     }
 
-    private boolean BTE() {
+    private boolean BTE(String virtualIP) {
         /*
         if(count>5/* && count <9){
             System.out.println("TEnho uma bicla perto de miiim!");
@@ -224,7 +228,7 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
         }else{
             System.out.println("não tenho bicla nenhuma!");
             return false;
-        }*/
+        }
 
         if(Station()){
             if(first==0){
@@ -244,6 +248,8 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
             return true;
         }
         else return false;
+        */
+        return GPSTrackingApp.singleton.isInRange(virtualIP);
     }
 
     private boolean Station() {
