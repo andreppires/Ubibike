@@ -39,7 +39,8 @@ public class StationsActivity extends FragmentActivity implements OnMapReadyCall
         System.out.println(Stations.getStations().getStationsList());
         System.out.println(Stations.getStations().getStationsList().size());
 
-        if (!(Stations.getStations().getStationsList().size() == 0)) {
+        if (!(Stations.getStations().getStationsList() ==null )) {
+            if (!(Stations.getStations().getStationsList().size() ==0)){
             setContentView(R.layout.activity_stations);
             // Obtain the SupportMapFragment and get notified when the map is ready to be used.
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -76,6 +77,11 @@ public class StationsActivity extends FragmentActivity implements OnMapReadyCall
             });
 
         } else{
+            Toast.makeText(context, "There are no bicycles. Please try again", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+        }
+        else {
             Toast.makeText(context, "Cannot load stations. Please try again", Toast.LENGTH_SHORT).show();
             finish();
         }

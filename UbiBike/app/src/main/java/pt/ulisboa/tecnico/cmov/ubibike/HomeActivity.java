@@ -112,6 +112,8 @@ public class HomeActivity extends AppCompatActivity {
 
             } else {
                 System.out.println("NAO consegui obter as estações ");
+                GetStations getsts = new GetStations();
+                getsts.execute();
 
             }
         }

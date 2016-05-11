@@ -205,8 +205,11 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
         int newPoint= Client.getClient().getPontos()+ aux; //1 ponto por cada 100 metros.
         System.out.println("pontos obtidos: "+aux);
         Client.getClient().setPontos(newPoint);
-        SetPoints enviaPontos = new SetPoints(Client.getClient().getUsername(),newPoint);
-        enviaPontos.execute();
+
+        if(newPoint>0){
+            SetPoints enviaPontos = new SetPoints(Client.getClient().getUsername(),newPoint);
+            enviaPontos.execute();
+        }
 
         //Muda o estado da bicicleta para que volte a ficar disponivel.
         LeaveBike leave = new LeaveBike(Stations.getStations().getBiclaIP());
@@ -306,5 +309,13 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
         String permission = "android.permission.ACCESS_COARSE_LOCATION";
         int res = this.checkCallingOrSelfPermission(permission);
         return (res == PackageManager.PERMISSION_GRANTED);
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        endCare();
+        finish();
+
     }
 }

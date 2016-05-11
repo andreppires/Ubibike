@@ -20,7 +20,7 @@ public class LeaveBike extends AsyncTask<Void, Void, Boolean> {
     }
 
 @Override
-protected Boolean doInBackground(Void... params) { //todo apenas actualiza os pontos do atual utilizador. Pontos do amigo também têm de ser atualizados.
+protected Boolean doInBackground(Void... params) {
         RestClient client = new RestClient("http://andrepirespi.duckdns.org:3000/leaveBike");
     client.AddParam("bikeid", biclaToLeave);
         try {
