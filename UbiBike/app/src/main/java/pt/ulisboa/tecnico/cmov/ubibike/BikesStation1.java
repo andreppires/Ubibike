@@ -75,6 +75,7 @@ public class BikesStation1 extends AppCompatActivity {
                 String[] st = response.split("\"");
                 bikes.add(st[3]);
                 return true;
+
             }
                 return false;
         }
