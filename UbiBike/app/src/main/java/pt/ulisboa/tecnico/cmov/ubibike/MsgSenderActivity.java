@@ -40,6 +40,7 @@ import pt.inesc.termite.wifidirect.service.SimWifiP2pService;
 import pt.inesc.termite.wifidirect.sockets.SimWifiP2pSocket;
 import pt.inesc.termite.wifidirect.sockets.SimWifiP2pSocketManager;
 import pt.inesc.termite.wifidirect.sockets.SimWifiP2pSocketServer;
+import pt.ulisboa.tecnico.cmov.ubibike.AsyncTask.SetPoints;
 
 /**
  * Created by wefbak on 07/05/2016.
@@ -178,6 +179,20 @@ public class MsgSenderActivity extends Activity implements
         @Override
         public void onClick(View v) {
 
+            if(me.getText().toString().startsWith("PONTOS")){
+                int myPoints = Client.getClient().getPontos();
+                String[] st2 = me.getText().toString().split("-");
+                int pointsSend = Integer.parseInt(st2[1]);
+
+                if(myPoints > pointsSend) {
+                    SetPoints connectServer = new SetPoints(Client.getClient().getUsername(), (myPoints - pointsSend));
+                    connectServer.execute();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Não existem pontos para enviar", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
+
             new SendCommTask().executeOnExecutor(
                     AsyncTask.THREAD_POOL_EXECUTOR,
                     me.getText().toString());
@@ -254,7 +269,7 @@ public class MsgSenderActivity extends Activity implements
                                     int myPoints = Client.getClient().getPontos();
                                     myPoints = myPoints + pointsReceive;
 
-                                    Log.d("RECEVICEPOINTS", "Tens estes pontos agora " + myPoints);
+                                    Log.d("RECEVICEPOINTS", "Tens "+myPoints+" pontos ");
 
                                     Client.getClient().setPontos(myPoints);
                                 }
@@ -321,6 +336,7 @@ public class MsgSenderActivity extends Activity implements
         @Override
         protected Void doInBackground(String... msg) {
             try {
+
                 mCliSocket.getOutputStream().write((msg[0] + "\n").getBytes());
                 BufferedReader sockIn = new BufferedReader(
                         new InputStreamReader(mCliSocket.getInputStream()));

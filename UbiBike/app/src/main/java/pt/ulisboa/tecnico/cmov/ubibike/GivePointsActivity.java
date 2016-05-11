@@ -12,7 +12,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.EOFException;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 import pt.inesc.termite.wifidirect.sockets.SimWifiP2pSocket;
 
@@ -118,8 +121,6 @@ public class GivePointsActivity extends AppCompatActivity {
             if (success) {
                 friendpoints.setText(Integer.toString(friendsPoints + pointsToSend));
                 mypoints.setText(Integer.toString(myPoints - pointsToSend));
-
-
             } else {
                 pointstosend.setError(getString(R.string.error_server));
             }

@@ -237,7 +237,6 @@ public class GPSTrackingApp extends Application implements
                                                                         Log.d("RECEVICEPOINTS", "Tens estes pontos agora " + myPoints);
 
                                                                         Client.getClient().setPontos(myPoints);
-                                                                        sock.getOutputStream().write(("\n").getBytes());
                                                                 }
                                                         }
 
