@@ -6,8 +6,8 @@ create table user
 
 create table store(
       storeid varchar(255)	not null unique,
-      latitude 	FLOAT(7,4)	not null,
-      longitude 	FLOAT(7,4)	not null,
+      latitude 	FLOAT(13,10)	not null,
+      longitude 	FLOAT(13,10	not null,
       primary key (storeid)
 );
 
@@ -30,8 +30,8 @@ create table rotas
 
 create table coordenadas(
   rota int not null,
-  latitude 	FLOAT(7,4)	not null,
-  longitude 	FLOAT(7,4)	not null,
+  latitude 	FLOAT(13,10)	not null,
+  longitude 	FLOAT(13,10) not null,
   foreign key(rota) references rotas(rotaid)
 );
 

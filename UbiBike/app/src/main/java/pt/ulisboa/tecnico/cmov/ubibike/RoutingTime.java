@@ -125,10 +125,6 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
                     running = false;
                     mightStarting=false;
                     System.out.println("fim da rota!");
-                    if(endCareDone){
-                        endCareDone=false;
-                        endCare();
-                    }
                 }
             } else if (Station() && BTE(bikeid)){
                 System.out.println("caso Staton e BTE");
@@ -151,12 +147,9 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
                 System.out.println("Vai fazer um runningzinho!");
                 if(firstTime){
                     firstTime=false;
-                    initiateRoute();
-                    sendRouteCoordinate(locationsRoute.get(locationsRoute.size()-2));
                     realRoute.add(locationsRoute.get(locationsRoute.size()-2));
 
-
-                }else sendRouteCoordinate(location);
+                }
 
                 setDistance(location);
                 realRoute.add(location);
@@ -204,20 +197,46 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
     }
 
     private void endCare() {
+
+        //Muda o estado da bicicleta para que volte a ficar disponivel.
+        LeaveBike leave = new LeaveBike(Stations.getStations().getBiclaIP());
+        leave.execute();
+        try {
+            Thread.sleep(1000);                 //1000 milliseconds is one second.
+        } catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
+
+        //nova rota
+        initiateRoute();
+        try {
+            Thread.sleep(1000);                 //1000 milliseconds is one second.
+        } catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
+
+        //enviar coordenadas
+        for(Location p : realRoute){
+            sendRouteCoordinate(p);
+            try {
+                Thread.sleep(1000);                 //1000 milliseconds is one second.
+            } catch(InterruptedException ex) {
+                Thread.currentThread().interrupt();
+            }
+
+        }
+
         //Actualizar os pontos do utilizador.
         int aux = ((int) distance)/100; //parte inteira da distancia percorrida.
         int newPoint= Client.getClient().getPontos()+ aux; //1 ponto por cada 100 metros.
         System.out.println("pontos obtidos: "+aux);
         Client.getClient().setPontos(newPoint);
 
-        if(newPoint>0){
+        if(aux>0){
             SetPoints enviaPontos = new SetPoints(Client.getClient().getUsername(),newPoint);
             enviaPontos.execute();
         }
 
-        //Muda o estado da bicicleta para que volte a ficar disponivel.
-        LeaveBike leave = new LeaveBike(Stations.getStations().getBiclaIP());
-        leave.execute();
     }
 
     private boolean BTE(String virtualIP) {
@@ -229,7 +248,7 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
             System.out.println("não tenho bicla nenhuma!");
             return false;
         }
-
+*/
         if(Station()){
             if(first==0){
                 first++;
@@ -248,8 +267,8 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
             return true;
         }
         else return false;
-        */
-        return GPSTrackingApp.singleton.isInRange(virtualIP);
+
+        //return GPSTrackingApp.singleton.isInRange(virtualIP);
     }
 
     private boolean Station() {
@@ -269,10 +288,8 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
 
         String user=Client.getClient().getUsername();
 
-        route = new CreateNewRoute(user, bikeid);
+        route = new CreateNewRoute(user, Stations.getStations().getBiclaIP());
         route.execute();
-        sendRouteCoordinate(locationsRoute.get(locationsRoute.size()-1)); //Adicionar à rota a coordenada inicial onde se colocou o mightStart=true
-
     }
 
     public void sendRouteCoordinate(Location loc) {

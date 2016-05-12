@@ -86,7 +86,6 @@ public class ShowRoutes extends AppCompatActivity {
 
         for (int i=0; i < aux.length ; i++ ) {
             String[] st = aux[i].split(":");
-            System.out.println("coiso="+st[1]);
             coisinhoNovo=st[1].replace("}","");
             if(coisinhoNovo.contains("]"))
                 listRoutes.add(st[1].replace("}]",""));
@@ -94,17 +93,17 @@ public class ShowRoutes extends AppCompatActivity {
 
         }
 
-        ListView listBikesStation1= (ListView) findViewById(R.id.listOfRoutes);
+        final ListView listBikesStation1= (ListView) findViewById(R.id.listOfRoutes);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(ShowRoutes.this, android.R.layout.simple_list_item_1, listRoutes);
         listBikesStation1.setAdapter(adapter);
 
         listBikesStation1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String routeid = ((TextView)view).getText().toString();
-
+                String bikeIP = ((TextView)view).getText().toString();
+                System.out.println("o escolhido:"+ bikeIP);
                 Intent intent = new Intent(ShowRoutes.this, ShowThatRoute.class);
-                intent.putExtra("ROUTEID", routeid);
+                intent.putExtra("KEY_EXTRA", bikeIP);
                 startActivity(intent);
             }
         });
