@@ -37,10 +37,8 @@ public class ChangePassword extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 oldPass = oldPassword.getText().toString();
-                System.out.println("oldPass= "+oldPass);
 
                 newPass = newpassword.getText().toString();
-                System.out.println("newPass= "+newPass);
 
                 AcaoButao();
             }
@@ -75,7 +73,7 @@ public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
     @Override
     protected Boolean doInBackground(Void... params) {
 
-        RestClient client = new RestClient("http://10.0.2.3:3000/user");
+        RestClient client = new RestClient("http://andrepirespi.duckdns.org:3000/user");
         client.AddParam("username", mEmail);
         try {
             client.Execute(RequestMethod.GET);
@@ -83,21 +81,19 @@ public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
             e.printStackTrace();
         }
         String response = client.getResponse();
-        System.out.println("1ªresposta: "+response);
+
 
         if(response.contains(":")){
             String[] aux= response.split(":");
             String[] aux1= aux[1].split("\"");
-            System.out.println("1= "+mPassword);
-            System.out.println("2= "+aux1[1]);
+
             if(mPassword.equals(aux1[1])){
                 //set new password
-                System.out.println("estou aqui PAH!");
-                client = new RestClient("http://10.0.2.3:3000/updatepass");
+
+                client = new RestClient("http://andrepirespi.duckdns.org:3000/updatepass");
                 client.AddParam("username", mEmail);
-                System.out.println("username= "+mEmail);
                 client.AddParam("novapassword", mNewPassword);
-                System.out.println("novapassword= "+mNewPassword);
+
 
                 try {
                     client.Execute(RequestMethod.POST);
@@ -105,7 +101,6 @@ public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
                     e.printStackTrace();
                 }
                 response = client.getResponse();
-                System.out.println("2ªresposta: "+response);
 
                 if(response.contains("OK")){
                     return true;
@@ -121,8 +116,9 @@ public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
         if (success) {
 
-            //Toast.makeText(this.getContext(), "Não existem pontos para enviar", Toast.LENGTH_SHORT).show();
-            newpassword.setError("Password Updated");
+            Toast toast = Toast.makeText(getApplicationContext(), "Password Updated", Toast.LENGTH_SHORT);
+            toast.show();
+
         } else {
             oldPassword.setError("Wrong Password");
         }

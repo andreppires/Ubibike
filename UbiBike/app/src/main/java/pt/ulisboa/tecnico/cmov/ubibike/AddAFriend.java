@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -36,6 +37,8 @@ public class AddAFriend extends AppCompatActivity {
 
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +65,7 @@ public class AddAFriend extends AppCompatActivity {
     }
 
     public void createListView(ArrayList<String> arg){
-        System.out.println("arg antes do 1º adapter: "+arg);
+
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arg);
         myList.setAdapter(adapter);
         myList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -170,12 +173,12 @@ public class AddAFriend extends AppCompatActivity {
             if (success) {
                 arr_friends.add(chosenFriend);
                 arg.remove(chosenFriend);
-                System.out.println("arg depois do 2º adapter: " + arg);
+
                 ArrayAdapter adapter2 = new ArrayAdapter<String>(AddAFriend.this, android.R.layout.simple_list_item_1, arg);
                 myList.setAdapter(adapter2);
                 Toast toast = Toast.makeText(getApplicationContext(), friend + " é agora seu amigo", Toast.LENGTH_SHORT);
                 toast.show();
-                System.out.println(client.getFriends());
+
             } else {
             }
         }
