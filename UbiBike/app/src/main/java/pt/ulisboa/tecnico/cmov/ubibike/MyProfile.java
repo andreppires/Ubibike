@@ -44,6 +44,15 @@ public class MyProfile extends FragmentActivity {
                 });
 
         mButton = (Button)findViewById(R.id.changePassword);
+        mButton = (Button)findViewById(R.id.showTraj);
+        mButton.setOnClickListener(
+                new View.OnClickListener() {
+                    public void onClick(View view) {
+                        showRoutes();
+                    }
+                });
+
+        mButton = (Button)findViewById(R.id.editProfile);
         mButton.setOnClickListener(
                 new View.OnClickListener() {
                     public void onClick(View view) {
@@ -64,18 +73,26 @@ public class MyProfile extends FragmentActivity {
         pointsView.setText(strI);
     }
 
+    private void login() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
 
     public void showFriends(View view) {
         Intent intent = new Intent(this, FriendsActivity.class);
         startActivity(intent);
     }
 
+    class DeleteAyncAccount extends AsyncTask<Void, Void, Boolean> {
 
     public void changePassword(){
             Intent intent = new Intent(this, ChangePassword.class);
             startActivity(intent);
     }
 
-
+    public void showRoutes(){
+        Intent intent = new Intent (this, ShowRoutes.class);
+        startActivity(intent);
+    }
 
 }

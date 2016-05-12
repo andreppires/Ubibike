@@ -24,16 +24,16 @@ protected Boolean doInBackground(Void... params) {
         RestClient client = new RestClient("http://andrepirespi.duckdns.org:3000/leaveBike");
     client.AddParam("bikeid", biclaToLeave);
         try {
-        client.Execute(RequestMethod.POST);
+        client.Execute(RequestMethod.GET);
         } catch (Exception e) {
         e.printStackTrace();
         }
         String response = client.getResponse();
 
-        if(!response.contains("OK")){
-        return true;
+        if(response.contains("OK")){
+            return true;
         }else {
-        return false;
+            return false;
         }
         }
 

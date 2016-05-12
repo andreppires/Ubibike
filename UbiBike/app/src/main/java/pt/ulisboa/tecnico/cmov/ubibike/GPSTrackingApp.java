@@ -8,8 +8,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.os.AsyncTask;
 import android.os.IBinder;
 import android.os.Messenger;
+import android.util.Log;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 import pt.inesc.termite.wifidirect.SimWifiP2pBroadcast;
 import pt.inesc.termite.wifidirect.SimWifiP2pDevice;
@@ -85,6 +92,9 @@ public class GPSTrackingApp extends Application implements
                 Intent intent = new Intent(getApplicationContext(), SimWifiP2pService.class);
                 bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
                 mBound = true;
+
+                new IncommingCommTask().executeOnExecutor(
+                        AsyncTask.THREAD_POOL_EXECUTOR);
 
         }
 
@@ -193,5 +203,57 @@ public class GPSTrackingApp extends Application implements
                                 }
                         })
                         .show();
+        }
+
+        public class IncommingCommTask extends AsyncTask<Void, String, Void> {
+
+                @Override
+                protected Void doInBackground(Void... params) {
+
+                        try {
+                                mSrvSocket = new SimWifiP2pSocketServer(
+                                        10002);
+                        } catch (IOException e) {
+                                e.printStackTrace();
+                        }
+                        while (!Thread.currentThread().isInterrupted()) {
+                                try {
+                                        SimWifiP2pSocket sock = mSrvSocket.accept();
+
+                                        try {
+                                                BufferedReader sockIn = new BufferedReader(
+                                                        new InputStreamReader(sock.getInputStream()));
+
+                                                while (!sock.isClosed()) {
+                                                        String st = sockIn.readLine();
+                                                        if (st != null) {
+                                                                if(st.startsWith("PONTOS")){
+
+                                                                        String[] st2 = st.split("-");
+                                                                        int pointsReceive = Integer.parseInt(st2[1]);
+                                                                        int myPoints = Client.getClient().getPontos();
+                                                                        myPoints = myPoints + pointsReceive;
+
+                                                                        Log.d("RECEVICEPOINTS", "Tens estes pontos agora " + myPoints);
+
+                                                                        Client.getClient().setPontos(myPoints);
+                                                                }
+                                                        }
+
+                                                        sock.getOutputStream().write(("\n").getBytes());
+                                                }
+
+
+                                        } catch (IOException e) {
+                                                Log.d("Error reading socket:", e.getMessage());
+                                        }
+                                } catch (IOException e) {
+                                        Log.d("Error socket:", e.getMessage());
+                                        break;
+                                        //e.printStackTrace();
+                                }
+                        }
+                        return null;
+                }
         }
 }

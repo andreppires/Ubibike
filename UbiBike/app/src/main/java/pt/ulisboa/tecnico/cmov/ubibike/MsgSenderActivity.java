@@ -40,6 +40,7 @@ import pt.inesc.termite.wifidirect.service.SimWifiP2pService;
 import pt.inesc.termite.wifidirect.sockets.SimWifiP2pSocket;
 import pt.inesc.termite.wifidirect.sockets.SimWifiP2pSocketManager;
 import pt.inesc.termite.wifidirect.sockets.SimWifiP2pSocketServer;
+import pt.ulisboa.tecnico.cmov.ubibike.AsyncTask.SetPoints;
 
 /**
  * Created by wefbak on 07/05/2016.
@@ -136,6 +137,10 @@ public class MsgSenderActivity extends Activity implements
         arr_messages = new ArrayList<ChatMessage>();
         adapter = new ChatAdapter(MsgSenderActivity.this, new ArrayList<ChatMessage>());
         myList.setAdapter(adapter);
+
+        ChatMessage cm = new ChatMessage();
+        cm.setMessage("Para enviar pontos, envie PONTOS-x onde x sao os pontos a enviar");
+        displayMessage(cm);
     }
 
     private View.OnClickListener listenerInRangeButton = new View.OnClickListener() {
@@ -173,6 +178,20 @@ public class MsgSenderActivity extends Activity implements
     private View.OnClickListener listenerSendButton = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+
+            if(me.getText().toString().startsWith("PONTOS")){
+                int myPoints = Client.getClient().getPontos();
+                String[] st2 = me.getText().toString().split("-");
+                int pointsSend = Integer.parseInt(st2[1]);
+
+                if(myPoints > pointsSend) {
+                    SetPoints connectServer = new SetPoints(Client.getClient().getUsername(), (myPoints - pointsSend));
+                    connectServer.execute();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Não existem pontos para enviar", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
 
             new SendCommTask().executeOnExecutor(
                     AsyncTask.THREAD_POOL_EXECUTOR,
@@ -243,10 +262,20 @@ public class MsgSenderActivity extends Activity implements
                             String st = sockIn.readLine();
                             if(st != null) {
                                 publishProgress(st);
+                                if(st.startsWith("PONTOS")){
+
+                                    String[] st2 = st.split("-");
+                                    int pointsReceive = Integer.parseInt(st2[1]);
+                                    int myPoints = Client.getClient().getPontos();
+                                    myPoints = myPoints + pointsReceive;
+
+                                    Log.d("RECEVICEPOINTS", "Tens "+myPoints+" pontos ");
+
+                                    Client.getClient().setPontos(myPoints);
+                                }
 
                                 sock.getOutputStream().write(("\n").getBytes());
                             }
-
                         }
 
                     } catch (IOException e) {
@@ -307,6 +336,7 @@ public class MsgSenderActivity extends Activity implements
         @Override
         protected Void doInBackground(String... msg) {
             try {
+
                 mCliSocket.getOutputStream().write((msg[0] + "\n").getBytes());
                 BufferedReader sockIn = new BufferedReader(
                         new InputStreamReader(mCliSocket.getInputStream()));
