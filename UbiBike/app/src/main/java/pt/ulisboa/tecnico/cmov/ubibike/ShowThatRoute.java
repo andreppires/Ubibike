@@ -111,6 +111,7 @@ public class ShowThatRoute extends AppCompatActivity {
                 coordenadas.add(primas);
             }
 
+
             // Get a handle to the Map Fragment
             mMap = ((SupportMapFragment) getSupportFragmentManager()
                     .findFragmentById(R.id.map)).getMap();
