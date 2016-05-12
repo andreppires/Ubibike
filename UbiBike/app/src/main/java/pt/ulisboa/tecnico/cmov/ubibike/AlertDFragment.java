@@ -53,7 +53,7 @@ public class AlertDFragment extends DialogFragment {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            RestClient client = new RestClient("http://10.0.2.3:3000/userdelete");
+            RestClient client = new RestClient("http://andrepirespi.duckdns.org:3000/userdelete");
             client.AddParam("username", mEmail);
             try {
                 client.Execute(RequestMethod.POST);
