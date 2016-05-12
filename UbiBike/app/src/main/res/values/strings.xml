@@ -21,6 +21,7 @@
     <string name="title_activity_bikes_station2">BikesStation2</string>
     <string name="title_activity_bikes_station3">BikesStation3</string>
     <string name="title_activity_routing_time">Map</string>
+    <string name="deleteAcc">Open Alert DialogFragment</string>
     <string name="google_app_id">AIzaSyDEiigAJRmtgtDpHDolNWPYapGOyuzQGB4</string>
 
 

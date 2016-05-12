@@ -72,8 +72,8 @@
         <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Edit Profile"
-            android:id="@+id/editProfile"
+            android:text="Change Password"
+            android:id="@+id/changePassword"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp" />
 

@@ -1,8 +1,15 @@
 package pt.ulisboa.tecnico.cmov.ubibike;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,9 +20,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-public class MyProfile extends AppCompatActivity {
+public class MyProfile extends FragmentActivity {
     Button mButton;
     ArrayList<String> arr_friends = new ArrayList<String>();
+    Button deleteAcc;
+    FragmentManager fm = getSupportFragmentManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,21 +32,22 @@ public class MyProfile extends AppCompatActivity {
         setContentView(R.layout.activity_my_profile);
 
 
+
         mButton = (Button)findViewById(R.id.deleteAcc);
         mButton.setOnClickListener(
                 new View.OnClickListener() {
                     public void onClick(View view) {
-                        DeleteAyncAccount deletaAi = new DeleteAyncAccount(Client.getClient().getUsername());
-                        deletaAi.execute();
-                        login();
+                        AlertDFragment alertdFragment = new AlertDFragment();
+                        alertdFragment.show(fm, "Alert Dialog Fragment");
+
                     }
                 });
 
-        mButton = (Button)findViewById(R.id.editProfile);
+        mButton = (Button)findViewById(R.id.changePassword);
         mButton.setOnClickListener(
                 new View.OnClickListener() {
                     public void onClick(View view) {
-                        editProfile();
+                        changePassword();
                     }
 
                 }
@@ -54,41 +64,18 @@ public class MyProfile extends AppCompatActivity {
         pointsView.setText(strI);
     }
 
-    private void login() {
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-    }
 
     public void showFriends(View view) {
         Intent intent = new Intent(this, FriendsActivity.class);
         startActivity(intent);
     }
 
-    class DeleteAyncAccount extends AsyncTask<Void, Void, Boolean> {
 
-        String mEmail;
-
-        public DeleteAyncAccount(String p){
-            this.mEmail=p;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            RestClient client = new RestClient("http://10.0.2.3:3000/userdelete");
-            client.AddParam("username", mEmail);
-            try {
-                client.Execute(RequestMethod.POST);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            client.getResponse();
-            return null;
-        }
-    }
-
-    public void editProfile(){
-            Intent intent = new Intent(this, EditProfile.class);
+    public void changePassword(){
+            Intent intent = new Intent(this, ChangePassword.class);
             startActivity(intent);
     }
+
+
 
 }
