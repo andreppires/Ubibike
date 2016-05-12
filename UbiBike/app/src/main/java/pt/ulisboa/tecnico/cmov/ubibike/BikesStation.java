@@ -1,37 +1,46 @@
 package pt.ulisboa.tecnico.cmov.ubibike;
 
-import android.content.Context;
+/**
+ * Created by andreppires on 11-05-2016.
+ */
+
 import android.content.Intent;
+import android.location.Location;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
-public class BikesStation3 extends AppCompatActivity {
+public class BikesStation extends AppCompatActivity {
 
     GetBikes vaiLaBuscar=null;
     PostPickUp postPickUp = null;
     ArrayList<String> bikes = new ArrayList<String>();
+    String yourDataObject;
 
+    public static final String KEY_EXTRA = "com.example.yourapp.KEY_BOOK";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bikes_station3);
+        setContentView(R.layout.activity_bikes_station1);
+
+        yourDataObject = null;
+        yourDataObject = getIntent().getStringExtra(KEY_EXTRA);
 
         getBikesList();
+
+
     }
 
     public void getBikesList() {
-        vaiLaBuscar= new GetBikes("Store3");
+        vaiLaBuscar= new GetBikes(yourDataObject);
         vaiLaBuscar.execute();
     }
 
@@ -46,6 +55,7 @@ public class BikesStation3 extends AppCompatActivity {
         }
 
 
+
         @Override
         protected Boolean doInBackground(Void... params) {
             RestClient client = new RestClient("http://andrepirespi.duckdns.org:3000/bike");
@@ -56,9 +66,10 @@ public class BikesStation3 extends AppCompatActivity {
                 e.printStackTrace();
             }
 
+            System.out.println("A STATION TEM AS SEGUINTES BIKES");
+            System.out.println(client.getResponse());
             String response = client.getResponse();
 
-            System.out.println(response);
             if (response.contains(",")) {
                 String[] aux= response.split(",");
 
@@ -68,11 +79,12 @@ public class BikesStation3 extends AppCompatActivity {
                 }
                 return true;
             } else if (response.contains("{")) {
-            String[] st = response.split("\"");
-            bikes.add(st[3]);
-            return true;
-        } else
-                return false;
+                String[] st = response.split("\"");
+                bikes.add(st[3]);
+                return true;
+
+            }
+            return false;
         }
 
 
@@ -82,14 +94,6 @@ public class BikesStation3 extends AppCompatActivity {
             if (success) {
                 vaiLaBuscar=null;
                 coiso();
-            } else {
-                runOnUiThread(new Runnable()
-                {
-                    public void run() {
-                        Context context = getApplicationContext();
-                        Toast.makeText(context, "Não existem bicicletas disponíveis nesta estação", Toast.LENGTH_SHORT).show();
-                    }
-                });
             }
         }
 
@@ -101,21 +105,31 @@ public class BikesStation3 extends AppCompatActivity {
 
     protected void coiso () {
 
-        ListView listBikesStation3= (ListView) findViewById(R.id.listOfBikesInStation1);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(BikesStation3.this, android.R.layout.simple_list_item_1, bikes);
-        listBikesStation3.setAdapter(adapter);
+        ListView listBikesStation1= (ListView) findViewById(R.id.listOfBikesInStation1);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(BikesStation.this, android.R.layout.simple_list_item_1, bikes);
+        listBikesStation1.setAdapter(adapter);
 
-        listBikesStation3.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listBikesStation1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String bikeIP = ((TextView)view).getText().toString();
+
                 Stations.getStations().setBiclaIP(bikeIP);
-                Intent intent = new Intent(BikesStation3.this, RoutingTime.class);
-                intent.putExtra("STRING_I_NEED", bikeIP);
+                PostPickUp postPickUp = new PostPickUp(bikeIP);
+                postPickUp.execute();
+
+                Intent intent = new Intent(BikesStation.this, RoutingTime.class);
+                intent.putExtra("BIKEIP", bikeIP);
+
+                Stations station = new Stations();
+                Location stationlocal = station.getStation1();
+
+
                 startActivity(intent);
             }
-        } );
+        });
     }
+
 
     class PostPickUp extends AsyncTask<Void, Void, Boolean>{
 
@@ -123,10 +137,11 @@ public class BikesStation3 extends AppCompatActivity {
 
         PostPickUp(String pickedUpbikeid) {
             bikeid = pickedUpbikeid;
+
         }
 
         @Override
-        protected Boolean doInBackground(Void... params) { //todo apenas actualiza os pontos do atual utilizador. Pontos do amigo também têm de ser atualizados.
+        protected Boolean doInBackground(Void... params) {
             RestClient client = new RestClient("http://andrepirespi.duckdns.org:3000/pickUp");
             client.AddParam("bikeid", bikeid);
 
@@ -145,11 +160,13 @@ public class BikesStation3 extends AppCompatActivity {
             }
         }
 
+
         @Override
         protected void onCancelled() {
             postPickUp = null;
         }
     }
+
 
 
 }

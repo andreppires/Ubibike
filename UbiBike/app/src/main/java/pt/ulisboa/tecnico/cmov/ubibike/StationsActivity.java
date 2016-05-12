@@ -39,7 +39,8 @@ public class StationsActivity extends FragmentActivity implements OnMapReadyCall
         System.out.println(Stations.getStations().getStationsList());
         System.out.println(Stations.getStations().getStationsList().size());
 
-        if (!(Stations.getStations().getStationsList().size() == 0)) {
+        if (!(Stations.getStations().getStationsList() ==null )) {
+            if (!(Stations.getStations().getStationsList().size() ==0)){
             setContentView(R.layout.activity_stations);
             // Obtain the SupportMapFragment and get notified when the map is ready to be used.
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -54,7 +55,8 @@ public class StationsActivity extends FragmentActivity implements OnMapReadyCall
             buttonReservar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(StationsActivity.this, BikesStation1.class);
+                    Intent intent = new Intent(StationsActivity.this, BikesStation.class);
+                    intent.putExtra(BikesStation.KEY_EXTRA, "Store1");
                     startActivity(intent);
                 }
             });
@@ -62,7 +64,8 @@ public class StationsActivity extends FragmentActivity implements OnMapReadyCall
             buttonReservar2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(StationsActivity.this, BikesStation2.class);
+                    Intent intent = new Intent(StationsActivity.this, BikesStation.class);
+                    intent.putExtra(BikesStation.KEY_EXTRA, "Store2");
                     startActivity(intent);
                 }
             });
@@ -70,12 +73,18 @@ public class StationsActivity extends FragmentActivity implements OnMapReadyCall
             buttonReservar3.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(StationsActivity.this, BikesStation3.class);
+                    Intent intent = new Intent(StationsActivity.this, BikesStation.class);
+                    intent.putExtra(BikesStation.KEY_EXTRA, "Store3");
                     startActivity(intent);
                 }
             });
 
         } else{
+            Toast.makeText(context, "There are no bicycles. Please try again", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+        }
+        else {
             Toast.makeText(context, "Cannot load stations. Please try again", Toast.LENGTH_SHORT).show();
             finish();
         }

@@ -39,71 +39,49 @@ public class AddAFriend extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         setContentView(R.layout.activity_add_afriend);
-
         myList = (ListView) findViewById(R.id.allUsersListView);
+        System.out.println("Amigos iniciais: "+arr_friends);
         getUsersList();
-
     }
 
 
     public ArrayList<String> cleanList(ArrayList<String> listToClean) {
-        ArrayList<String> aux = new ArrayList<String>(listToClean);
-        aux.remove(me);
-        /*for (int i = 0; i < aux.size(); i++) {
-            if (arr_friends.contains(aux.get(i))) {
-                String toRemove = aux.get(i);
-                aux.remove(toRemove);
-            }
-        }*/
-        for (String p: arr_friends){
-            for(String i: aux){
-                if(p.contains(i)){
-                    aux.remove(i);
-                }
-            }
 
+        ArrayList<String> aux = new ArrayList<String>();
+
+        for (int i = 0; i < listToClean.size(); i++) {
+
+            if (!(arr_friends.contains(listToClean.get(i)))) {
+                String toAdd = listToClean.get(i);
+                aux.add(toAdd);
+            }
         }
+        aux.remove(me);
         return aux;
     }
 
-    public void createListView(final ArrayList<String> arg){
-
-
+    public void createListView(ArrayList<String> arg){
+        System.out.println("arg antes do 1º adapter: "+arg);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arg);
-
-        adapter.notifyDataSetChanged();
-
         myList.setAdapter(adapter);
-
         myList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 chosenFriend = myList.getAdapter().getItem(position).toString();
                 PostNewFriend(me, chosenFriend);
-                arr_friends.add(chosenFriend);
-                arg.remove(chosenFriend);
-                ArrayAdapter adapter2 = new ArrayAdapter<String>(AddAFriend.this, android.R.layout.simple_list_item_1, arg);
-                myList.setAdapter(adapter2);
             }
         });
     }
 
 
     public void getUsersList() {
-
         getUs= new GetUsersList(me);
         getUs.execute();
     }
 
-    /* Ligação ao server
-     */
-
     class GetUsersList extends AsyncTask<Void, Void, Boolean> {
-
         private String users=null;
         public GetUsersList(String e){
             this.users=e;
@@ -113,7 +91,6 @@ public class AddAFriend extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(Void... params) {
             RestClient client = new RestClient("http://andrepirespi.duckdns.org:3000/getUsers");
-
             try {
                 client.Execute(RequestMethod.GET);
             } catch (Exception e) {
@@ -145,7 +122,7 @@ public class AddAFriend extends AppCompatActivity {
                 arg = cleanList(arr_users);
                 createListView(arg);
             } else {
-                System.out.println("fódeu!");
+
             }
         }
 
@@ -191,10 +168,15 @@ public class AddAFriend extends AppCompatActivity {
             postfr = null;
 
             if (success) {
+                arr_friends.add(chosenFriend);
+                arg.remove(chosenFriend);
+                System.out.println("arg depois do 2º adapter: " + arg);
+                ArrayAdapter adapter2 = new ArrayAdapter<String>(AddAFriend.this, android.R.layout.simple_list_item_1, arg);
+                myList.setAdapter(adapter2);
                 Toast toast = Toast.makeText(getApplicationContext(), friend + " é agora seu amigo", Toast.LENGTH_SHORT);
                 toast.show();
+                System.out.println(client.getFriends());
             } else {
-
             }
         }
 

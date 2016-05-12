@@ -219,6 +219,44 @@ app.post("/updatepass", function(req, res){
 			});
 	});
 
+	app.get("/getRoutesFromUser", function(req, res) {
+		if(!req.query.username) {
+				return res.send({"status": "error", "message": "missing username"});
+		}
+		else {connection.query('SELECT rotaid FROM rotas WHERE username=\''+req.query.username+'\';', function(err, rows, fields) {
+				if (err){
+				if (err.code === 'PROTOCOL_SEQUENCE_TIMEOUT') {
+					node.exit();
+									}
+				res.status(203).send("Wrong query");
+			}else {
+				res.status(200).send(rows);
+				console.log(rows);
+			}
+});
+}
+});
+
+	app.get("/getCoordinatesFromRoute", function(req, res) {
+		if(!req.query.routeid) {
+				return res.send({"status": "error", "message": "missing routeid"});
+		}
+		else {connection.query('SELECT latitude, longitude FROM coordenadas WHERE rota=\''+req.query.routeid+'\';', function(err, rows, fields) {
+				if (err){
+				if (err.code === 'PROTOCOL_SEQUENCE_TIMEOUT') {
+					node.exit();
+									}
+				res.status(203).send("Wrong query");
+			}else {
+				res.status(200).send(rows);
+				console.log(rows);
+			}
+});
+}
+});
+
+
+
 	app.post("/pickUp", function(req, res){
 			if(!req.body.bikeid) {
 					return res.send({"status": "error", "message": "missing bikeid"});

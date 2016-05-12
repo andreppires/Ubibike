@@ -33,6 +33,14 @@ public class MyProfile extends AppCompatActivity {
                     }
                 });
 
+        mButton = (Button)findViewById(R.id.showTraj);
+        mButton.setOnClickListener(
+                new View.OnClickListener() {
+                    public void onClick(View view) {
+                        showRoutes();
+                    }
+                });
+
         mButton = (Button)findViewById(R.id.editProfile);
         mButton.setOnClickListener(
                 new View.OnClickListener() {
@@ -74,7 +82,7 @@ public class MyProfile extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            RestClient client = new RestClient("http://10.0.2.3:3000/userdelete");
+            RestClient client = new RestClient("http://andrepirespi.duckdns.org:3000/userdelete");
             client.AddParam("username", mEmail);
             try {
                 client.Execute(RequestMethod.POST);
@@ -89,6 +97,11 @@ public class MyProfile extends AppCompatActivity {
     public void editProfile(){
             Intent intent = new Intent(this, EditProfile.class);
             startActivity(intent);
+    }
+
+    public void showRoutes(){
+        Intent intent = new Intent (this, ShowRoutes.class);
+        startActivity(intent);
     }
 
 }
