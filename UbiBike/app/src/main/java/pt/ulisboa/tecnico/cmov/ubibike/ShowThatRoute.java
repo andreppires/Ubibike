@@ -1,9 +1,15 @@
 package pt.ulisboa.tecnico.cmov.ubibike;
 
+import android.content.Intent;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -13,6 +19,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,7 +89,7 @@ public class ShowThatRoute extends AppCompatActivity {
 
     private void parseAndSet(String response) {
         System.out.println("resposta: " + response);
-        List<Location> coordenadas = new ArrayList<>();
+        ArrayList<Location> coordenadas = new ArrayList<>();
         if (response.contains(",")) {
             String[] aux = response.split("\\}");
             String[] coisinhoNovo;
@@ -112,9 +119,9 @@ public class ShowThatRoute extends AppCompatActivity {
             }
 
 
-            // Get a handle to the Map Fragment
+            /*// Get a handle to the Map Fragment
             mMap = ((SupportMapFragment) getSupportFragmentManager()
-                    .findFragmentById(R.id.map)).getMap();
+                    .findFragmentById(R.id.Mmap)).getMap();
 
             System.out.println("coordendas[0]: latitude= "+coordenadas.get(1).getLatitude());
             System.out.println("coordendas[0]: longitude= "+coordenadas.get(1).getLongitude());
@@ -133,11 +140,19 @@ public class ShowThatRoute extends AppCompatActivity {
             PolylineOptions rectOptions = new PolylineOptions();
             for (Location p:coordenadas) {
                 rectOptions.add(new LatLng(p.getLatitude(), p.getLongitude()));
-            }
-            // Get back the mutable Polyline
-            Polyline polyline = mMap.addPolyline(rectOptions);
+
+                // Get back the mutable Polyline
+                Polyline polyline = mMap.addPolyline(rectOptions);
+                System.out.println("ciclo bue vezes!");
+            }*/
+            ArrayList<String> aaa= new ArrayList<>();
+            for(Location p: coordenadas)
+                aaa.add(""+p.getLatitude()+", "+p.getLongitude());
 
 
+            final ListView listBikesStation1= (ListView) findViewById(R.id.listCoordinates);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(ShowThatRoute.this, android.R.layout.simple_list_item_1, aaa);
+            listBikesStation1.setAdapter(adapter);
         }
     }
 }
