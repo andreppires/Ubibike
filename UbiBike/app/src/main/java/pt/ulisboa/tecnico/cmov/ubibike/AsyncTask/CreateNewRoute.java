@@ -23,7 +23,6 @@ public class CreateNewRoute extends AsyncTask<Void, Void, Boolean> {
     protected Boolean doInBackground(Void... params) {
         RestClient client = new RestClient("http://andrepirespi.duckdns.org:3000/newroute");
         client.AddParam("username", username);
-        System.out.println("bikeid= "+bikeid);
         client.AddParam("bikeid", bikeid);
         try {
             client.Execute(RequestMethod.POST);

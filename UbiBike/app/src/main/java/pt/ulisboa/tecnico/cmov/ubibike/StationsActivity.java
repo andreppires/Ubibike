@@ -36,9 +36,6 @@ public class StationsActivity extends FragmentActivity implements OnMapReadyCall
 
         final Context context = getApplicationContext();
 
-        System.out.println(Stations.getStations().getStationsList());
-        System.out.println(Stations.getStations().getStationsList().size());
-
         if (!(Stations.getStations().getStationsList() ==null )) {
             if (!(Stations.getStations().getStationsList().size() ==0)){
             setContentView(R.layout.activity_stations);

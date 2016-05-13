@@ -58,8 +58,6 @@ public class ShowRoutes extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            System.out.println("A STATION TEM AS SEGUINTES BIKES");
-            System.out.println(client.getResponse());
             response = client.getResponse();
 
             if (response.contains("\"")) {
@@ -101,7 +99,6 @@ public class ShowRoutes extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String bikeIP = ((TextView)view).getText().toString();
-                System.out.println("o escolhido:"+ bikeIP);
                 Intent intent = new Intent(ShowRoutes.this, ShowThatRoute.class);
                 intent.putExtra("KEY_EXTRA", bikeIP);
                 startActivity(intent);

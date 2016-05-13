@@ -113,7 +113,6 @@ public class FriendsActivity extends Activity {
 
             String response = client.getResponse();
 
-            System.out.println(response);
 
             if (response.contains(",")) {
 
@@ -142,7 +141,6 @@ public class FriendsActivity extends Activity {
 
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(FriendsActivity.this, android.R.layout.simple_list_item_1, arr_friends);
 
-                System.out.println(arr_friends);
                 myList.setAdapter(adapter);
                 getfr=null;
 

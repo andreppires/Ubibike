@@ -25,7 +25,6 @@ public class FriendProfile extends AppCompatActivity {
         Bundle b = intent.getExtras();
 
         friendUsername = b.getString("STRING_I_NEED");
-        System.out.println("friendUsername= "+friendUsername);
         GetPoints vailabuscar = new GetPoints(friendUsername);
         vailabuscar.execute();
 

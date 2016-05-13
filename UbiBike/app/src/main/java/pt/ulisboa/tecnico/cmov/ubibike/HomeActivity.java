@@ -53,7 +53,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void stationActivity(View view) {
-        System.out.println("size= "+ Stations.getStations().getStationsList().size());
         Intent intent = new Intent(this, StationsActivity.class);
         startActivity(intent);
     }
@@ -108,10 +107,10 @@ public class HomeActivity extends AppCompatActivity {
                     String[] st = aux[i].split("\"");
                     Stations.getStations().addStationsList(st[3]);
                 }
-                System.out.println("consegui obter as estações ");
+                System.out.println("Consegui obter as estações ");
 
             } else {
-                System.out.println("NAO consegui obter as estações ");
+                System.out.println("Não consegui obter as estações ");
                 GetStations getsts = new GetStations();
                 getsts.execute();
 

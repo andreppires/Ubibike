@@ -108,8 +108,6 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
             Log.d("GPS", "Location Changed " + location.toString());
             double latitude= location.getLatitude();
             double longitude= location.getLongitude();
-            System.out.println("lat= "+latitude);
-            System.out.println("lon= "+longitude);
 
 
             setDistance(location);
@@ -119,15 +117,13 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
             //Check if it is running or not
 
             if(!Station() && !BTE(bikeid)) {
-                System.out.println("caso Nenhum");
 
                 if (mightStopped) {
                     running = false;
                     mightStarting=false;
-                    System.out.println("fim da rota!");
+                    endCare();
                 }
             } else if (Station() && BTE(bikeid)){
-                System.out.println("caso Staton e BTE");
 
                 if (running){
                     mightStopped=true;
@@ -136,7 +132,6 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
                     mightStarting=true;
                 }
             } else if(!Station() && BTE(bikeid)){
-                System.out.println("caso BTE");
                 if (mightStarting) {
 
                     running = true;
@@ -144,7 +139,6 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
             }
 
             if(running){
-                System.out.println("Vai fazer um runningzinho!");
                 if(firstTime){
                     firstTime=false;
                     realRoute.add(locationsRoute.get(locationsRoute.size()-2));
@@ -164,8 +158,6 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
                 Polyline polyline = mMap.addPolyline(rectOptions);
             }
 
-            System.out.println("RUNNING= "+running+"\n"+"mightSTART = "+mightStarting+"\nmightSTOP= "+mightStopped);
-            System.out.println("-------------------------------------------------------------------");
 
         }
 
@@ -207,6 +199,7 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
             Thread.currentThread().interrupt();
         }
 
+        if(realRoute.size()==0) return;
         //nova rota
         initiateRoute();
         try {
@@ -229,7 +222,6 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
         //Actualizar os pontos do utilizador.
         int aux = ((int) distance)/100; //parte inteira da distancia percorrida.
         int newPoint= Client.getClient().getPontos()+ aux; //1 ponto por cada 100 metros.
-        System.out.println("pontos obtidos: "+aux);
         Client.getClient().setPontos(newPoint);
 
         if(aux>0){
@@ -240,15 +232,7 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
     }
 
     private boolean BTE(String virtualIP) {
-        /*
-        if(count>5/* && count <9){
-            System.out.println("TEnho uma bicla perto de miiim!");
-            return true;
-        }else{
-            System.out.println("não tenho bicla nenhuma!");
-            return false;
-        }
-*/
+
         if(Station()){
             if(first==0){
                 first++;
@@ -278,7 +262,6 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
                 && locationsRoute.get(locationsRoute.size()-1).getLongitude()==(Stations.getStations().getStation2().getLongitude())
             || locationsRoute.get(locationsRoute.size()-1).getLatitude()==(Stations.getStations().getStation3().getLatitude())
                 && locationsRoute.get(locationsRoute.size()-1).getLongitude()==(Stations.getStations().getStation3().getLongitude())){
-            System.out.println("estou numa station!");
             return true;
         } else{ return false;}
     }
@@ -337,7 +320,6 @@ public class RoutingTime extends FragmentActivity implements OnMapReadyCallback 
     @Override
     protected void onStop(){
         super.onStop();
-        endCare();
         finish();
 
     }

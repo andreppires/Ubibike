@@ -66,8 +66,6 @@ public class BikesStation extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            System.out.println("A STATION TEM AS SEGUINTES BIKES");
-            System.out.println(client.getResponse());
             String response = client.getResponse();
 
             if (response.contains(",")) {

@@ -44,7 +44,6 @@ public class AddAFriend extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_afriend);
         myList = (ListView) findViewById(R.id.allUsersListView);
-        System.out.println("Amigos iniciais: "+arr_friends);
         getUsersList();
     }
 
